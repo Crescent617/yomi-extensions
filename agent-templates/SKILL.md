@@ -22,12 +22,12 @@ description: subagent 角色模板（ROLE.md）的选用与编写。Use when 用
 ---
 description: 一句话角色 + 何时用 + 何时别用（选择面，必备）
 tools_block: [write, edit]   # 可选：只能收窄父 agent 的工具集，不能扩大
-model_key: claude-opus       # 可选：缺省继承父 session
-skills: [task-board]         # 可选：预加载 skill 白名单，缺省继承全部
 ---
 
 角色正文：角色定位、工作方式、输出契约、边界。
 ```
+
+当前 frontmatter 只有 `description` + `tools_block` 两个有效字段；`model_key`、`skills` 等写入会被容忍忽略（model 与 skills 全继承父 session），将来启用不破坏存量文件。
 
 1. 正文三件套：**工作方式、输出契约**（编号的结构化产出）、**边界**。保持短——知识走 skills，不进模板。
 2. 能进 `tools_block` 的约束不写进正文：schema 级约束不漂移，prompt 级约束会。
