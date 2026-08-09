@@ -1,5 +1,5 @@
 ---
-name: tickets
+name: task-tickets
 description: 工单（tickets）派活与跨 session 待办：一个任务一个 md 文件，落在工作区 .yomi/tickets/。Use when 拆解任务派发给 subagent 并发执行、回报或更新任务进度、验收聚合子 agent 产出，或新 session 接手未完成工作时。
 ---
 
@@ -12,7 +12,7 @@ tickets 是工作区里的 `.yomi/tickets/` 目录，一个任务一个工单文
 建单和状态流转用 `scripts/ticket.sh`（在本 skill 目录下），不用手写 frontmatter——脚本保证 id/slug/时间戳/格式合规，并拒绝非法状态流转：
 
 ```bash
-S=<本 skill 目录>/scripts/ticket.sh
+S=<baseDir>/scripts/ticket.sh
 
 $S new --dir <工作区> --title "任务名" --body "描述 + 验收标准"   # 建单，输出文件路径
 $S set <文件> claimed --by <你的 session id>                    # 签收
@@ -39,19 +39,7 @@ created_at: 2026-08-09T10:00:00+08:00
 （完成时写：结果摘要 + 关键产物路径）
 ```
 
-### 规范（与 kernel 投影解析对齐，违反会静默降级显示）
-
-- **id**：2–4 个小写字母前缀（不含 `-`）+ `-` + 恰好 5 位小写字母数字，如 `yt-t3m9q`；现造，不与现有文件重复（用脚本建单则自动满足）。
-- **slug**：小写单词以 `-` 连接（`fix-auth-timeout`）。
-- **frontmatter**：
-  - `title`：可省（缺省从 slug 推导）；写了就单行纯文本 ≤60 字符，供侧栏显示。
-  - `status`：必填，四值枚举 `pending`/`claimed`/`done`/`blocked`。
-  - `owner_session_id`：签收时必填（自己的 session id）；重置 pending 时清空。
-  - `created_at`：必填，RFC3339 带时区。
-  - **不写 `updated_at`**——由文件 mtime 自动派生，手写的会与真实更新时间矛盾。
-- **正文**：任务描述 + 验收标准（逐条、可检查）；完成时追加标题恰为 `## Result` 的结果段（摘要 + 产物路径）。
-- **状态机**：`pending → claimed → done|blocked`；`blocked → claimed`（复工）；`claimed → pending`（僵尸重置，正文注明原因）。脚本强制执行。
-- **归档**：完结文件移入 `.yomi/tickets/archive/`（子目录不计入活跃板）。
+手工编辑正文时注意：frontmatter 键名不动；**别加 `updated_at`**（显示时间由文件 mtime 派生）；id 第二段须恰好 5 位字母数字（kernel 投影的兜底解析规则，脚本建单自动满足）。
 
 ## 派活（协调者）
 
