@@ -1,15 +1,15 @@
 ---
-name: task-board
-description: 共享任务板（board）派活与跨 session 待办：一个任务一个 md 文件，落在工作区 .yomi/board/。Use when 拆解任务派发给 subagent 并发执行、回报或更新任务进度、验收聚合子 agent 产出，或新 session 接手板上未完成工作时。
+name: tickets
+description: 工单（tickets）派活与跨 session 待办：一个任务一个 md 文件，落在工作区 .yomi/tickets/。Use when 拆解任务派发给 subagent 并发执行、回报或更新任务进度、验收聚合子 agent 产出，或新 session 接手未完成任务时。
 ---
 
-# Task Board
+# Tickets
 
-board 是工作区里的 `.yomi/board/` 目录，一个任务一个文件，跨 session 持久。**核心用法是派活：board 文件就是派工单，状态在文件里流转，别人发现你工作的唯一途径就是板上状态。**
+tickets 是工作区里的 `.yomi/tickets/` 目录，一个任务一个工单文件，跨 session 持久。**核心用法是派活：工单文件就是派工单，状态在文件里流转，别人发现你工作的唯一途径就是工单状态。**
 
 ## 文件格式
 
-`.yomi/board/<id>-<slug>.md`：
+`.yomi/tickets/<id>-<slug>.md`：
 
 ```markdown
 ---
@@ -37,13 +37,13 @@ created_at: 2026-08-09T10:00:00+08:00
   - **不写 `updated_at`**——由文件 mtime 自动派生，手写的会与真实更新时间矛盾。
 - **正文**：任务描述 + 验收标准（逐条、可检查）；完成时追加标题恰为 `## Result` 的结果段（摘要 + 产物路径）。
 - **状态机**：`pending → claimed → done|blocked`；`blocked → claimed`（复工）；`claimed → pending`（僵尸重置，正文注明原因）。
-- **归档**：完结文件移入 `.yomi/board/archive/`（子目录不计入活跃板）。
+- **归档**：完结文件移入 `.yomi/tickets/archive/`（子目录不计入活跃板）。
 
 ## 派活（协调者）
 
 1. 把工作拆成可独立完成的工作包，每包一个文件：标题一行、验收标准可检查、上下文写全——执行者没有你的上下文，派工单就是它知道的一切。
-2. spawn 子 agent 时在 prompt 里**指明它的任务文件路径**（"你的单是 `.yomi/board/yb-xxx.md`"）；一批任务可以并发派多个。
-3. 完成标准：每个工作包都有 board 文件且已随 spawn 指派，`grep -l "status: pending" .yomi/board/*.md` 能列出全部未签收任务。
+2. spawn 子 agent 时在 prompt 里**指明它的任务文件路径**（"你的单是 `.yomi/tickets/yb-xxx.md`"）；一批任务可以并发派多个。
+3. 完成标准：每个工作包都有 工单且已随 spawn 指派，`grep -l "status: pending" .yomi/tickets/*.md` 能列出全部未签收任务。
 
 ## 干活（执行者）
 
@@ -53,11 +53,11 @@ created_at: 2026-08-09T10:00:00+08:00
 
 ## 聚合验收（协调者）
 
-1. `grep "^status:" .yomi/board/*.md` 一把看全局；子 agent 会自己更新文件，汇总靠读文件，不逐个发消息追问。
-2. 全部 done 后统一验收（可派 `reviewer` 模板做独立验收），通过的文件挪进 `.yomi/board/archive/`。
-3. 完成标准：主目录只剩未完结任务。
+1. `grep "^status:" .yomi/tickets/*.md` 一把看全局；子 agent 会自己更新文件，汇总靠读文件，不逐个发消息追问。
+2. 全部 done 后统一验收（可派 `reviewer` 模板做独立验收），通过的文件挪进 `.yomi/tickets/archive/`。
+3. 完成标准：主目录只剩未完结工单。
 
 ## 捡活（跨 session 接手）
 
-- 新 session 开工前、或手上活干完时：`grep -l "status: pending" .yomi/board/*.md` 看有没有待办。
+- 新 session 开工前、或手上活干完时：`grep -l "status: pending" .yomi/tickets/*.md` 看有没有待办。
 - `claimed` 但文件 mtime 超过 30 分钟未更新的，多半是僵尸（认领者已死）：重置为 `pending` 并注明原因，或直接自己签收接着干。
