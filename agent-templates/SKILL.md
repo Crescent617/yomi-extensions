@@ -9,7 +9,7 @@ description: subagent 角色模板（ROLE.md）的选用与编写。Use when 用
 
 ## 选用模板
 
-1. 准备用 agent 工具派活时，先 glob 模板目录：`~/.agents/agents/*/ROLE.md` 与工作区 `.agents/agents/*/ROLE.md`。内置 `planner` / `builder` / `reviewer` 随时可用，无需文件。
+1. 准备用 agent 工具派活时，先 glob 模板目录：`~/.yomi/agents/*/ROLE.md` 与工作区 `.yomi/agents/*/ROLE.md`。内置 `planner` / `builder` / `reviewer` 随时可用，无需文件。
 2. 只读 frontmatter 做选择：`description` 带负向线索（"不用于……"），先排除再匹配。拿不准时 `read` 正文。
 3. 一次性角色不要套模板——直接把角色写进 agent 工具的 `prompt`。模板留给反复出现的角色。
 4. 完成标准：`template` 参数传入选定名字，或明确决定 inline。
@@ -35,11 +35,11 @@ skills: [task-board]         # 可选：预加载 skill 白名单，缺省继承
 
 ## 策展纪律
 
-**写哪：默认 workspace。** 自写角色永远先落 `.agents/agents/`——不存在"创建时选全局"的判断题。唯一例外：用户明确说"写到全局"。
+**写哪：默认 workspace。** 自写角色永远先落 `.yomi/agents/`——不存在"创建时选全局"的判断题。唯一例外：用户明确说"写到全局"。
 
 理由（代价不对称）：该全局却写了 workspace，代价只是以后再晋升；该 workspace 却写了全局，它会出现在所有项目的选择面里造成污染，且全局库没有 git 审查面。默认值必须偏向 workspace。
 
-**晋升：全局是晋升出来的，不是写出来的。** 满足全部条件才晋升到 `~/.agents/agents/`：
+**晋升：全局是晋升出来的，不是写出来的。** 满足全部条件才晋升到 `~/.yomi/agents/`：
 
 1. 跨项目证据：在两个以上项目里被实际用过（不是"感觉有用"）；
 2. 零项目耦合：正文无绝对路径、无项目特有命令/约定；

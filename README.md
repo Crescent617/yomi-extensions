@@ -28,6 +28,6 @@ git clone https://github.com/Crescent617/yomi-extensions ~/repos/yomi-extensions
 ln -s ~/repos/yomi-extensions/task-board ~/.agents/skills/task-board
 ```
 
-templates 不属于 skills 生态，安装走手动 symlink 到 `~/.agents/agents/`。
+templates 不属于 skills 生态：官方模板内核预置、无需安装；本仓的实验性/社区模板手动 symlink 到 `~/.yomi/agents/`。
 
 yomi 读 `~/.agents/skills/` 与项目内 `.agents/skills/`（项目覆盖全局），symlink 原生支持。
