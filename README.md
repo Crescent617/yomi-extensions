@@ -7,8 +7,9 @@
 | 类型 | 资产 | 说明 |
 |---|---|---|
 | skill | [`task-board/`](task-board/SKILL.md) | 共享任务板约定：`.yomi/board/` 目录、claim 协议、状态机、协调者聚合姿势 |
+| skill | [`agent-templates/`](agent-templates/SKILL.md) | subagent 角色模板（ROLE.md）的选用、编写与策展纪律 |
 
-规划中：`agent-templates` skill（subagent 模板约定）、`janitor` skill（后台策展，暂缓）、`templates/`（内置 agent 模板：planner/builder/reviewer）。随主仓 P1–P3 落地逐步放出。
+规划中：`janitor` skill（后台策展，暂缓）。官方内置模板 planner/builder/reviewer 预置在 yomi 内核（`crates/kernel/src/agent_tmpl/`），不在此仓。
 
 ## 安装
 
