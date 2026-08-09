@@ -9,7 +9,7 @@ description: subagent 角色模板（ROLE.md）的选用与编写。Use when 用
 
 ## 选用模板
 
-1. 准备用 agent 工具派活时，先 glob 模板目录：`~/.yomi/agents/*/ROLE.md` 与工作区 `.yomi/agents/*/ROLE.md`。内置 `planner` / `reviewer` / `explorer` 随时可用，无需文件。
+1. 准备用 agent 工具派活时，先 glob 模板目录：`~/.yomi/agents/*/ROLE.md` 与工作区 `.yomi/agents/*/ROLE.md`。内置随时可用（无需文件）：`planner`（只读实施规划）、`reviewer`（独立验收，VERDICT 锚点）、`explorer`（只读代码库快搜）。
 2. 只读 frontmatter 做选择：`description` 带负向线索（"不用于……"），先排除再匹配。拿不准时 `read` 正文。
 3. 一次性角色不要套模板——直接把角色写进 agent 工具的 `prompt`。模板留给反复出现的角色。
 4. 完成标准：`template` 参数传入选定名字，或明确决定 inline。
@@ -27,7 +27,7 @@ tools_block: [write, edit]   # 可选：只能收窄父 agent 的工具集，不
 角色正文：角色定位、工作方式、输出契约、边界。
 ```
 
-当前 frontmatter 只有 `description` + `tools_block` 两个有效字段；`model_key`、`skills` 等写入会被容忍忽略（model 与 skills 全继承父 session），将来启用不破坏存量文件。
+当前 frontmatter 只有 `description` + `tools_block` 两个有效字段；`model_key`、`skills` 等写入会被容忍忽略（model 与 skills 全继承父 session），将来启用不破坏存量文件。内置模板（planner/reviewer/explorer）一律不设 `tools_block`——约束写进正文即可；`tools_block` 留给需要硬约束的自定义场景（且注意：取值按大小写不敏感的正则匹配，不是精确名）。
 
 1. 正文三件套：**工作方式、输出契约**（编号的结构化产出）、**边界**。保持短——知识走 skills，不进模板。
 2. 能进 `tools_block` 的约束不写进正文：schema 级约束不漂移，prompt 级约束会。
