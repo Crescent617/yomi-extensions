@@ -1,11 +1,11 @@
 ---
 name: task-board
-description: 共享任务板（board）协调多 agent 工作：一个任务一个 md 文件，落在工作区的 .yomi/board/。Use when 拆解任务派发给 subagent 并发执行、认领或继续 board 上的任务、回报任务进度/结果，或需要跨 session 跟踪谁在做什么时候。
+description: 共享任务板（board）派活与跨 session 待办：一个任务一个 md 文件，落在工作区 .yomi/board/。Use when 拆解任务派发给 subagent 并发执行、回报或更新任务进度、验收聚合子 agent 产出，或新 session 接手板上未完成工作时。
 ---
 
 # Task Board
 
-board 是工作区里的 `.yomi/board/` 目录，一个任务一个文件，是本工作区所有 agent 共享的唯一事实源。开工前先看板，干活中勤更新——别人发现你工作的唯一途径就是板上的文件状态。
+board 是工作区里的 `.yomi/board/` 目录，一个任务一个文件，跨 session 持久。**核心用法是派活：board 文件就是派工单，状态在文件里流转，别人发现你工作的唯一途径就是板上状态。**
 
 ## 文件格式
 
@@ -15,7 +15,7 @@ board 是工作区里的 `.yomi/board/` 目录，一个任务一个文件，是�
 ---
 title: 一句话任务名
 status: pending | claimed | done | blocked
-owner_session_id: sess_...    # 认领时填自己的 session id
+owner_session_id: sess_...    # 签收时填自己的 session id
 created_at: 2026-08-09T10:00:00+08:00
 ---
 
@@ -25,26 +25,25 @@ created_at: 2026-08-09T10:00:00+08:00
 （完成时写：结果摘要 + 关键产物路径）
 ```
 
-## 创建任务（协调者）
+## 派活（协调者）
 
-1. 把工作拆成可独立完成的工作包，每包一个文件：标题一行、验收标准可检查、正文写清上下文（board 文件就是派工单，认领者没有你的上下文）。
-2. 全部置 `status: pending`，不填 owner。
-3. 完成标准：每个工作包都有独立 board 文件，且 `grep -l "status: pending" .yomi/board/*.md` 能列出全部新任务。
+1. 把工作拆成可独立完成的工作包，每包一个文件：标题一行、验收标准可检查、上下文写全——执行者没有你的上下文，派工单就是它知道的一切。
+2. spawn 子 agent 时在 prompt 里**指明它的任务文件路径**（"你的单是 `.yomi/board/yb-xxx.md`"）；一批任务可以并发派多个。
+3. 完成标准：每个工作包都有 board 文件且已随 spawn 指派，`grep -l "status: pending" .yomi/board/*.md` 能列出全部未签收任务。
 
-## 认领任务
+## 干活（执行者）
 
-1. `grep -l "status: pending" .yomi/board/*.md`，逐个读正文选一个能做的（`archive/` 子目录是归档，不在其列）。
-2. **先改文件再动手**：把 `status` 改为 `claimed`、`owner_session_id` 填自己的 session id——这一步编辑就是认领本身。
-3. 完成标准：任务文件里 owner 是你，然后才开始干活。
+1. 被派到任务后**先签收再动手**：`status: claimed` + `owner_session_id` 填自己——签收让板与现实一致。
+2. 干活。完成 → `done` + 补 `## Result`（结果摘要 + 产物路径）；卡壳 → `blocked` + 正文写清卡在哪、需要什么。
+3. 完成标准：文件状态与真实进度一致。口头说"做完了"不算数，文件里 done 才算。
 
-## 更新状态
+## 聚合验收（协调者）
 
-- 完成：`status: done` 并补 `## Result`（结果摘要 + 产物路径）。
-- 卡壳：`status: blocked`，正文写清卡在哪、需要什么。
-- 完成标准：文件状态与真实进度一致。口头说"做完了"不算数，文件里 done 才算。
+1. `grep "^status:" .yomi/board/*.md` 一把看全局；子 agent 会自己更新文件，汇总靠读文件，不逐个发消息追问。
+2. 全部 done 后统一验收（可派 `reviewer` 模板做独立验收），通过的文件挪进 `.yomi/board/archive/`。
+3. 完成标准：主目录只剩未完结任务。
 
-## 聚合进度（协调者）
+## 捡活（跨 session 接手）
 
-1. `grep "^status:" .yomi/board/*.md` 一把看全局；agent 完成了会自己更新文件，汇总靠读文件，不向子 agent 逐个发消息追问。
-2. 全部 done 后统一验收，然后把文件挪进 `.yomi/board/archive/`（主目录只留活任务）。
-3. 完成标准：主目录里只剩 pending/claimed/blocked 的任务。
+- 新 session 开工前、或手上活干完时：`grep -l "status: pending" .yomi/board/*.md` 看有没有待办。
+- `claimed` 但文件 mtime 超过 30 分钟未更新的，多半是僵尸（认领者已死）：重置为 `pending` 并注明原因，或直接自己签收接着干。
