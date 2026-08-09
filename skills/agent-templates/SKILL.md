@@ -9,7 +9,7 @@ description: subagent 角色模板（ROLE.md）的选用与编写。Use when 用
 
 ## 选用模板
 
-1. 准备用 agent 工具派活时，先 glob 模板目录：`~/.yomi/agents/*/ROLE.md` 与工作区 `.yomi/agents/*/ROLE.md`。内置 `planner` / `builder` / `reviewer` 随时可用，无需文件。
+1. 准备用 agent 工具派活时，先 glob 模板目录：`~/.yomi/agents/*/ROLE.md` 与工作区 `.yomi/agents/*/ROLE.md`。内置 `planner` / `reviewer` / `explorer` 随时可用，无需文件。
 2. 只读 frontmatter 做选择：`description` 带负向线索（"不用于……"），先排除再匹配。拿不准时 `read` 正文。
 3. 一次性角色不要套模板——直接把角色写进 agent 工具的 `prompt`。模板留给反复出现的角色。
 4. 完成标准：`template` 参数传入选定名字，或明确决定 inline。
