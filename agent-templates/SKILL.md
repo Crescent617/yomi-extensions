@@ -41,9 +41,12 @@ skills: [task-board]         # 可选：预加载 skill 白名单，缺省继承
 
 **晋升：全局是晋升出来的，不是写出来的。** 满足全部条件才晋升到 `~/.yomi/agents/`：
 
-1. 跨项目证据：在两个以上项目里被实际用过（不是"感觉有用"）；
+1. 跨项目证据：在两个以上项目里被实际用过（不是"感觉有用"）。取证：
+   `sqlite3 ~/.yomi/yomi.db "SELECT template, COUNT(*) uses, COUNT(DISTINCT project_id) projects FROM sessions WHERE template IS NOT NULL GROUP BY template"`——`projects >= 2` 才算数；
 2. 零项目耦合：正文无绝对路径、无项目特有命令/约定；
 3. 无近似全局角色（有就改旧的，不新建变体）；
 4. 晋升动作告知用户（全局变更要留痕）。
+
+**信任边界**：workspace 层（仓库里的 `.yomi/agents/`）的信任等级 = 该仓库的代码——clone 一个仓库就把它的模板带进来了，像对待它的代码一样对待它。内置模板的收窄不会被上层覆盖放宽（`tools_block` 跨层并集兜底），但正文和 `model_key` 会被覆盖——review 仓库自带的模板如同 review 它的依赖。
 
 模板会过期：模型变强后某些约束不再必要，定期回顾删减。

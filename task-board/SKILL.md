@@ -29,7 +29,7 @@ created_at: 2026-08-09T10:00:00+08:00
 
 1. 把工作拆成可独立完成的工作包，每包一个文件：标题一行、验收标准可检查、正文写清上下文（board 文件就是派工单，认领者没有你的上下文）。
 2. 全部置 `status: pending`，不填 owner。
-3. 完成标准：每个工作包都有独立 board 文件，且 `grep -l "status: pending" .yomi/board/` 能列出全部新任务。
+3. 完成标准：每个工作包都有独立 board 文件，且 `grep -l "status: pending" .yomi/board/*.md` 能列出全部新任务。
 
 ## 认领任务
 
