@@ -56,7 +56,7 @@ created_at: 2026-08-09T10:00:00+08:00
 ## 聚合验收（协调者）
 
 1. `grep "^status:" .yomi/tickets/*.md` 一把看全局；子 agent 会自己更新文件，汇总靠读文件，不逐个发消息追问。
-2. 全部 done 后统一验收（可派 `reviewer` 模板做独立验收），通过的文件 `mv` 进 `.yomi/tickets/archive/`。
+2. 全部 done 后统一验收（可派 `verifier` 模板做独立验收），通过的文件 `mv` 进 `.yomi/tickets/archive/`。
 3. 完成标准：主目录只剩未完结工单。
 
 ## 捡活（跨 session 接手）
