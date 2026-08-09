@@ -9,7 +9,7 @@ board 是工作区里的 `.yomi/board/` 目录，一个任务一个文件，跨 
 
 ## 文件格式
 
-`.yomi/board/<id>-<slug>.md`。id = 项目前缀 + 5 位字母数字（如 `yb-t3m9q`），每个任务现造一个，不与现有文件重复。
+`.yomi/board/<id>-<slug>.md`：
 
 ```markdown
 ---
@@ -24,6 +24,20 @@ created_at: 2026-08-09T10:00:00+08:00
 ## Result
 （完成时写：结果摘要 + 关键产物路径）
 ```
+
+### 规范（与 kernel 投影解析对齐，违反会静默降级显示）
+
+- **id**：2–4 个小写字母前缀（不含 `-`）+ `-` + 恰好 5 位小写字母数字，如 `yb-t3m9q`；现造，不与现有文件重复。
+- **slug**：小写单词以 `-` 连接（`fix-auth-timeout`）。
+- **frontmatter**：
+  - `title`：可省（缺省从 slug 推导）；写了就单行纯文本 ≤60 字符，供侧栏显示。
+  - `status`：必填，四值枚举 `pending`/`claimed`/`done`/`blocked`。
+  - `owner_session_id`：签收时必填（自己的 session id）；重置 pending 时清空。
+  - `created_at`：必填，RFC3339 带时区。
+  - **不写 `updated_at`**——由文件 mtime 自动派生，手写的会与真实更新时间矛盾。
+- **正文**：任务描述 + 验收标准（逐条、可检查）；完成时追加标题恰为 `## Result` 的结果段（摘要 + 产物路径）。
+- **状态机**：`pending → claimed → done|blocked`；`blocked → claimed`（复工）；`claimed → pending`（僵尸重置，正文注明原因）。
+- **归档**：完结文件移入 `.yomi/board/archive/`（子目录不计入活跃板）。
 
 ## 派活（协调者）
 
