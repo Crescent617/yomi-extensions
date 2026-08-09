@@ -3,7 +3,7 @@
 # 本脚本负责强制执行它：id 铸造、slug、时间戳、frontmatter 形状、状态机。
 #
 # 用法：
-#   ticket.sh new  --dir <工作区> --title <标题> [--prefix yt] [--body <正文>]
+#   ticket.sh new  --title <标题> [--dir <工作区，默认 cwd>] [--body <正文>]
 #                  （--body 缺省且 stdin 非 tty 时从 stdin 读）
 #   ticket.sh set  <文件> <pending|claimed|done|blocked> [--by <session_id>]
 #                  [--note <备注>] [--result <结果摘要>]
@@ -22,10 +22,10 @@ now_rfc3339() {
   date '+%Y-%m-%dT%H:%M:%S%z' | sed -E 's/([+-][0-9]{2})([0-9]{2})$/\1:\2/'
 }
 
-mint_id() { # $1=prefix $2=dir
-  local prefix="$1" dir="$2" id i
+mint_id() { # $1=dir
+  local dir="$1" id i
   for i in $(seq 10); do
-    id="$prefix-$(LC_ALL=C tr -dc 'a-z0-9' < /dev/urandom | head -c 5)"
+    id="$(LC_ALL=C tr -dc 'a-z0-9' < /dev/urandom | head -c 7)"
     compgen -G "$dir/$id-*.md" > /dev/null || { printf '%s' "$id"; return 0; }
   done
   fail "cannot mint unique id after 10 tries"
@@ -36,24 +36,22 @@ yaml_quote() { # 双引号标量，转义 \ 和 "
 }
 
 cmd_new() {
-  local dir="" title="" prefix="tk" body=""
+  local dir="$PWD" title="" body=""
   while [ $# -gt 0 ]; do
     case "$1" in
       --dir) dir="$2"; shift 2 ;;
       --title) title="$2"; shift 2 ;;
-      --prefix) prefix="$2"; shift 2 ;;
       --body) body="$2"; shift 2 ;;
       *) fail "new: unknown arg '$1'" ;;
     esac
   done
-  [ -n "$dir" ] || fail "new: --dir required"
   [ -n "$title" ] || fail "new: --title required"
   [ -n "$body" ] || [ -t 0 ] || body="$(cat)"
 
   local board="$dir/.yomi/tickets"
   mkdir -p "$board"
   local id slug file
-  id="$(mint_id "$prefix" "$board")"
+  id="$(mint_id "$board")"
   slug="$(slugify "$title")"
   file="$board/$id-$slug.md"
 

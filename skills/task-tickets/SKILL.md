@@ -39,12 +39,12 @@ created_at: 2026-08-09T10:00:00+08:00
 （完成时写：结果摘要 + 关键产物路径）
 ```
 
-手工编辑正文时注意：frontmatter 键名不动；**别加 `updated_at`**（显示时间由文件 mtime 派生）；id 第二段须恰好 5 位字母数字（kernel 投影的兜底解析规则，脚本建单自动满足）。
+手工编辑正文时注意：frontmatter 键名不动；**别加 `updated_at`**（显示时间由文件 mtime 派生）；id 是 7 位随机字母数字串（含字母+数字，如 `t3m9q2x`），脚本建单自动铸造。
 
 ## 派活（协调者）
 
 1. 拆工作包，每包用脚本 `new` 建单。派工单正文要上下文写全——执行者没有你的上下文，工单就是它知道的一切。
-2. spawn 子 agent 时在 prompt 里**指明它的工单路径**（"你的单是 `.yomi/tickets/yt-xxx.md`"）；一批任务可以并发派多个。
+2. spawn 子 agent 时在 prompt 里**指明它的工单路径**（"你的单是 `.yomi/tickets/t3m9q2x-xxx.md`"）；一批任务可以并发派多个。
 3. 完成标准：每个工作包都有工单且已随 spawn 指派，`grep -l "status: pending" .yomi/tickets/*.md` 能列出全部未签收工单。
 
 ## 干活（执行者）
