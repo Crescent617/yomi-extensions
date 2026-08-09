@@ -9,9 +9,8 @@ skills 住 [`skills/`](skills/) 子目录，其他资产类型（如模板）各
 | 类型 | 资产 | 说明 |
 |---|---|---|
 | skill | [`skills/task-tickets/`](skills/task-tickets/SKILL.md) | 工单约定：`.yomi/tickets/` 目录、派单/签收/状态机、聚合验收、僵尸回收 |
-| skill | [`skills/agent-templates/`](skills/agent-templates/SKILL.md) | subagent 角色模板（ROLE.md）的选用、编写与策展纪律 |
 
-规划中：`janitor` skill（后台策展，暂缓）。官方内置模板 planner/reviewer/explorer 预置在 yomi 内核（`crates/kernel/src/agent_tmpl/`），不在此仓。
+规划中：`janitor` skill（后台策展，暂缓）。模板机制（`agent` 工具 `template` 参数、ROLE.md/INDEX.md 约定）说明在 yomi 内核的工具 desc 与设计文档中，不再需要单独 skill。官方内置模板 planner/reviewer/explorer 预置在 yomi 内核（`crates/kernel/src/agent_tmpl/`），不在此仓。
 
 ## 安装
 
