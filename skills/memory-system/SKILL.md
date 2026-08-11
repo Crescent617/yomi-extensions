@@ -106,7 +106,7 @@ Design notes: the iron rules come first — an autonomous cron gets its read/wri
 
 ## Known pitfalls
 
-- Job names are unique **daemon-wide**: one daemon hosts one memory system as shipped. A second workspace's `dream` create short-circuits to the first workspace's job — for a second instance, derive the namespace from the workspace root directory name (`~/repos/foo` → `janitor:foo`): a fixed derivation, so re-setup computes the same name; same-basename workspaces still collide.
+- Job names are unique **daemon-wide**: one daemon hosts one memory system as shipped. A second workspace's `dream` create short-circuits to the first workspace's job — for a second instance, derive the namespace from the workspace root directory name (`~/repos/foo` → `dream:foo`, `janitor:foo`): a fixed derivation, so re-setup computes the same name; same-basename workspaces still collide.
 - The janitor's `yomi session list/cat` calls need the yomi CLI on the cron session's PATH.
 - `yomi session list` (no `-a`) matches sessions by exact working dir: subdirectory sessions are invisible, and a janitor in the wrong dir (CLI path landing in the daemon's default workspace) scans zero sessions and files "nothing today" forever.
 - A cron's manual `trigger` (run immediately) is suspected broken — verify by waiting for the real schedule, or run the flow by hand once.
