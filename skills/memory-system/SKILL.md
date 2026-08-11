@@ -69,7 +69,7 @@ recall ships with this skill at `scripts/recall` — a capped ripgrep over `memo
 
 Two creation paths:
 
-- **cron tool (preferred)** — from a session running in the workspace, have the agent create both jobs from the prompt files. The dedicated session inherits the caller's working dir and project, so the prompts' relative `memory/` paths resolve correctly.
+- **cron tool (preferred)** — from a session running in the workspace, have the agent create both jobs from the prompt files. The dedicated session inherits the caller's working dir, so the prompts' relative `memory/` paths resolve correctly.
 - **CLI** — the commands under each heading. The RPC path has no caller session to follow, so the dedicated session lands in the daemon's default workspace (`<data_dir>/workspace`); use this only when that *is* the target workspace. (`-d/--dir` is accepted but ignored by `yomi cron`.)
 
 Either way: fixed names `dream` and `janitor` (unique + ensure semantics — re-running setup never spawns duplicates), `--session` unset so each job gets its own dedicated session and the main session is never disturbed, `{{date}}` expands to the run date, schedules are 5-field expressions in local time. Later edits to a prompt file don't propagate to an existing job — recreate it (delete + create).
@@ -106,7 +106,8 @@ Design notes: the iron rules come first — an autonomous cron gets its read/wri
 
 ## Known pitfalls
 
-- Job names are unique **daemon-wide**: one daemon hosts one memory system. A second workspace's `dream` create short-circuits to the first workspace's job — for a second instance, namespace the names (e.g. `janitor:<project>`).
+- Job names are unique **daemon-wide**: one daemon hosts one memory system as shipped. A second workspace's `dream` create short-circuits to the first workspace's job — for a second instance, derive the namespace from the workspace root directory name (`~/repos/foo` → `janitor:foo`): a fixed derivation, so re-setup computes the same name; same-basename workspaces still collide.
 - The janitor's `yomi session list/cat` calls need the yomi CLI on the cron session's PATH.
+- `yomi session list` (no `-a`) matches sessions by exact working dir: subdirectory sessions are invisible, and a janitor in the wrong dir (CLI path landing in the daemon's default workspace) scans zero sessions and files "nothing today" forever.
 - A cron's manual `trigger` (run immediately) is suspected broken — verify by waiting for the real schedule, or run the flow by hand once.
-- The janitor's transcript reading must stay capped (user messages in full + assistant head/tail) or its context explodes.
+- The janitor's transcript reading must stay capped or its context explodes — don't drop the cap when editing the prompt.

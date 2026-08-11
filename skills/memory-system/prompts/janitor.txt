@@ -8,10 +8,10 @@ in daylight.
 
 1. Compute yesterday's date ({{date}} minus one day). Read yesterday's and the last 2–3
    days' entries in memory/diary/.
-2. Scan yesterday's sessions: `yomi session list -a` to spot the ones active yesterday,
-   then `yomi session cat -s <sid>` for each — never read the JSONL files directly.
-   Transcripts can be huge: read user messages in full plus only the head and tail of
-   assistant messages, and keep the total volume in check.
+2. Scan yesterday's sessions: `yomi session list` to spot the ones active yesterday, then
+   `yomi session cat -s <sid>` for each — never read the JSONL files directly. Transcripts
+   can be huge: read user messages in full plus only the head and tail of assistant
+   messages, and keep the total volume in check.
 3. Housekeeping:
    - contacts.md: record newly seen IDs (Lark open_id, GitLab user id, ...) into the table;
    - friend/ and group/ are living profiles holding only current info — update entries
