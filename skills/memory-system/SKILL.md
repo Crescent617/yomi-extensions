@@ -67,7 +67,12 @@ recall ships with this skill at `scripts/recall` — a capped ripgrep over `memo
 
 ## 3. The crons
 
-Create each with the command under its heading (5-field expression, local time), under the fixed names `dream` and `janitor` — job names are unique and create has ensure semantics, so re-running setup never spawns duplicates. `--session` is left unset so each job gets a dedicated session — the main session is never disturbed. `{{date}}` in each prompt expands to the run date. Run the create commands from the workspace root (or pass `-d <workspace>`): the prompts use relative `memory/` paths, so the job's working directory must be the workspace root. Later edits to a prompt file don't propagate to an existing job — recreate it (delete + create; ensure semantics keep this idempotent).
+Two creation paths:
+
+- **cron tool (preferred)** — from a session running in the workspace, have the agent create both jobs from the prompt files. The dedicated session inherits the caller's working dir and project, so the prompts' relative `memory/` paths resolve correctly.
+- **CLI** — the commands under each heading. The RPC path has no caller session to follow, so the dedicated session lands in the daemon's default workspace (`<data_dir>/workspace`); use this only when that *is* the target workspace. (`-d/--dir` is accepted but ignored by `yomi cron`.)
+
+Either way: fixed names `dream` and `janitor` (unique + ensure semantics — re-running setup never spawns duplicates), `--session` unset so each job gets its own dedicated session and the main session is never disturbed, `{{date}}` expands to the run date, schedules are 5-field expressions in local time. Later edits to a prompt file don't propagate to an existing job — recreate it (delete + create).
 
 ### dream — daily 03:33 (`33 3 * * *`)
 
