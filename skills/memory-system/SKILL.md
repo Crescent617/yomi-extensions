@@ -50,19 +50,24 @@ Why it is written this way:
 
 ```bash
 mkdir -p memory/diary memory/dream memory/janitor memory/friend memory/group
-touch memory/contacts.md memory/lesson.md memory/archive.md
+printf '| name | platform | id | note |\n| --- | --- | --- | --- |\n' > memory/contacts.md
+printf '# Lessons\n\n<!-- one line each: YYYY-MM-DD — lesson (source) -->\n' > memory/lesson.md
+touch memory/archive.md
 ```
 
-recall ships with this skill at `scripts/recall` — a capped ripgrep over `memory/`:
+Seeded headers keep the first writer from inventing a schema of its own. If the workspace is a git repo, add `memory/` to `.gitignore` — these are private notes, not project files.
 
-- evergreen files (contacts / lesson / archive / friend / group) first, capped at 30 lines;
-- dated files (diary / dream) in reverse-date order, capped at 50 lines — recent first;
+recall ships with this skill at `scripts/recall` — a capped ripgrep over `memory/`, in three tiers:
+
+- evergreen (contacts / lesson / friend / group) first, capped at 30 lines;
+- dated files (diary / dream / janitor) in reverse-date order, capped at 50 lines — recent first;
+- cold (archive.md) last, capped at 30 lines — it stores superseded info, so it ranks below everything current;
 - per-file cap of 20 matches, long lines truncated at 200 chars;
 - root resolution: `$RECALL_ROOT`, else walk up from cwd to the first `memory/`.
 
 ## 3. The crons
 
-Create each with the command under its heading (5-field expression, local time), under the fixed names `dream` and `janitor` — job names are unique and create has ensure semantics, so re-running setup never spawns duplicates. `--session` is left unset so each job gets a dedicated session — the main session is never disturbed. `{{date}}` in each prompt expands to the run date.
+Create each with the command under its heading (5-field expression, local time), under the fixed names `dream` and `janitor` — job names are unique and create has ensure semantics, so re-running setup never spawns duplicates. `--session` is left unset so each job gets a dedicated session — the main session is never disturbed. `{{date}}` in each prompt expands to the run date. Run the create commands from the workspace root (or pass `-d <workspace>`): the prompts use relative `memory/` paths, so the job's working directory must be the workspace root.
 
 ### dream — daily 03:33 (`33 3 * * *`)
 

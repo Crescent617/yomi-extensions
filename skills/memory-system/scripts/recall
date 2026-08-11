@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # recall — capped ripgrep over an agent's memory/ directory.
 # Usage: recall <keyword>
-#   evergreen files (contacts/lesson/archive/friend/group) first, 30-line cap;
-#   dated files (diary/dream) newest-first, 50-line cap;
+#   tier 1 evergreen (contacts/lesson/friend/group): 30-line cap;
+#   tier 2 dated (diary/dream/janitor): newest-first, 50-line cap;
+#   tier 3 cold (archive.md — superseded info): last, 30-line cap;
 #   20 matches per file, long lines truncated at 200 chars.
 # Root: $RECALL_ROOT, else walk up from $PWD to the first directory holding memory/.
 set -euo pipefail
@@ -26,27 +27,31 @@ fi
 
 m="$root/memory"
 evergreen=()
-for f in contacts.md lesson.md archive.md; do
+for f in contacts.md lesson.md; do
   if [[ -f "$m/$f" ]]; then evergreen+=("$m/$f"); fi
 done
 for d in friend group; do
   if [[ -d "$m/$d" ]]; then evergreen+=("$m/$d"); fi
 done
 dated=()
-for d in diary dream; do
+for d in diary dream janitor; do
   if [[ -d "$m/$d" ]]; then dated+=("$m/$d"); fi
 done
 
-opts=(-i -m 20 --max-columns 200 --max-columns-preview)
+opts=(-i -m 20 --max-columns 200 --max-columns-preview --with-filename)
 
-# evergreen tier: stable order, 30-line cap
+# tier 1, evergreen: stable order, 30-line cap
 if ((${#evergreen[@]})); then
   rg "${opts[@]}" -- "$kw" "${evergreen[@]}" 2>/dev/null | head -n 30 || true
 fi
-# dated tier: prepend the file's date as sort key, newest first, 50-line cap
+# tier 2, dated: prepend the file's date as sort key, newest first, 50-line cap
 if ((${#dated[@]})); then
   rg "${opts[@]}" -- "$kw" "${dated[@]}" 2>/dev/null \
     | sed -E 's#^.*/([0-9]{4}-[0-9]{2}-[0-9]{2})\.md:#\1 &#' \
     | sort -r | cut -d' ' -f2- | head -n 50 || true
+fi
+# tier 3, cold: archive.md holds superseded info — comes last, 30-line cap
+if [[ -f "$m/archive.md" ]]; then
+  rg "${opts[@]}" -- "$kw" "$m/archive.md" 2>/dev/null | head -n 30 || true
 fi
 exit 0
