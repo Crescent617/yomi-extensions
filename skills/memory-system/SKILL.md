@@ -99,12 +99,14 @@ Design notes: the iron rules come first — an autonomous cron gets its read/wri
 ## Verification
 
 - [ ] Ask "how did we decide X before?" — the agent runs recall first instead of guessing;
-- [ ] `yomi cron list` shows exactly one `dream` and one `janitor`;
+- [ ] `yomi cron list` shows exactly one `dream` and one `janitor`, and `yomi cron get <id>` shows a non-empty message — a failed `cat` still creates the job with an empty prompt, and the unique name then blocks re-creation;
 - [ ] diary files only grow by appends — no rewrites;
 - [ ] after the first scheduled runs, `memory/dream/` and `memory/janitor/` hold dated files;
 - [ ] the janitor report contains a "Suggestions" section (even an empty one).
 
 ## Known pitfalls
 
+- Job names are unique **daemon-wide**: one daemon hosts one memory system. A second workspace's `dream` create short-circuits to the first workspace's job — for a second instance, namespace the names (e.g. `janitor:<project>`).
+- The janitor's `yomi session list/cat` calls need the yomi CLI on the cron session's PATH.
 - A cron's manual `trigger` (run immediately) is suspected broken — verify by waiting for the real schedule, or run the flow by hand once.
 - The janitor's transcript reading must stay capped (user messages in full + assistant head/tail) or its context explodes.
