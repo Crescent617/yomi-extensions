@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # recall — capped ripgrep over an agent's memory/ directory.
 # Usage: recall <keyword>
-#   tier 1 evergreen (contacts/lesson/friend/group): 30-line cap;
+#   tier 1 evergreen (top-level *.md except archive.md, plus friend//group/): 30-line cap;
 #   tier 2 dated (diary/dream/janitor): newest-first, 50-line cap;
 #   tier 3 cold (archive.md — superseded info): last, 30-line cap;
 #   20 matches per file, long lines truncated at 200 chars.
@@ -27,8 +27,8 @@ fi
 
 m="$root/memory"
 evergreen=()
-for f in contacts.md lesson.md; do
-  if [[ -f "$m/$f" ]]; then evergreen+=("$m/$f"); fi
+for f in "$m"/*.md; do
+  if [[ -e "$f" && "$(basename "$f")" != archive.md ]]; then evergreen+=("$f"); fi
 done
 for d in friend group; do
   if [[ -d "$m/$d" ]]; then evergreen+=("$m/$d"); fi

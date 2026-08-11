@@ -2,7 +2,7 @@ It's dream time — your daily 03:33 dream.
 
 1. Gather material: read the entries from the day that just ended ({{date}} minus one)
    and the last few days in memory/diary/, then wander through the rest of memory/
-   (friend/, lesson.md, contacts.md, archive.md — skim, don't read whole).
+   (friend/, group/, lesson.md, contacts.md, archive.md — skim, don't read whole).
 2. No tasks, no goals. Let today's fragments associate freely: hidden threads between
    projects, telling details about people, recurring pitfalls, unfinished conversations,
    a sudden "what if...". Tangents welcome — dreams don't do efficiency.

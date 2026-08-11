@@ -59,7 +59,7 @@ Seeded headers keep the first writer from inventing a schema of its own. If the 
 
 recall ships with this skill at `scripts/recall` — a capped ripgrep over `memory/`, in three tiers:
 
-- evergreen (contacts / lesson / friend / group) first, capped at 30 lines;
+- evergreen (contacts / lesson / friend / group / emergent top-level notes) first, capped at 30 lines;
 - dated files (diary / dream / janitor) in reverse-date order, capped at 50 lines — recent first;
 - cold (archive.md) last, capped at 30 lines — it stores superseded info, so it ranks below everything current;
 - per-file cap of 20 matches, long lines truncated at 200 chars;
@@ -67,7 +67,7 @@ recall ships with this skill at `scripts/recall` — a capped ripgrep over `memo
 
 ## 3. The crons
 
-Create each with the command under its heading (5-field expression, local time), under the fixed names `dream` and `janitor` — job names are unique and create has ensure semantics, so re-running setup never spawns duplicates. `--session` is left unset so each job gets a dedicated session — the main session is never disturbed. `{{date}}` in each prompt expands to the run date. Run the create commands from the workspace root (or pass `-d <workspace>`): the prompts use relative `memory/` paths, so the job's working directory must be the workspace root.
+Create each with the command under its heading (5-field expression, local time), under the fixed names `dream` and `janitor` — job names are unique and create has ensure semantics, so re-running setup never spawns duplicates. `--session` is left unset so each job gets a dedicated session — the main session is never disturbed. `{{date}}` in each prompt expands to the run date. Run the create commands from the workspace root (or pass `-d <workspace>`): the prompts use relative `memory/` paths, so the job's working directory must be the workspace root. Later edits to a prompt file don't propagate to an existing job — recreate it (delete + create; ensure semantics keep this idempotent).
 
 ### dream — daily 03:33 (`33 3 * * *`)
 
