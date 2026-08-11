@@ -1,11 +1,11 @@
 ---
-name: memory-system
-description: Bootstrap a persistent memory + self-evolution system for an agent workspace. Use when setting up memory for a new agent or workspace, or configuring dream/janitor crons.
+name: memory-system-setup
+description: One-time bootstrap of a persistent memory + self-evolution system for an agent workspace. Use when setting up memory for a new agent or workspace, or configuring dream/janitor crons.
 ---
 
 # Memory System
 
-Bootstrap a memory + self-evolution system for a fresh agent workspace. Three parts: what the system prompt (or AGENTS.md) says, how `memory/` is laid out and searched, and two resident crons — **dream** diverges (makes connections), **janitor** converges (consolidates knowledge).
+Bootstrap a memory + self-evolution system for a fresh agent workspace. Three parts: what the system prompt (or AGENTS.md) says, how `memory/` is laid out and searched, and two resident crons — **dream** diverges (makes connections), **janitor** converges (consolidates knowledge). Setup is one-shot per workspace — the result references nothing in this skill.
 
 ## 1. The memory block (system prompt / AGENTS.md)
 
@@ -31,13 +31,13 @@ Memory persists under ./memory/:
   noted) instead of being deleted. Never pruned; grep it, never read it whole.
 - Volatile facts with an authoritative source elsewhere (requirement progress, MR status,
   schedules): cite the source, never copy a snapshot.
-- Search memory first: .agents/skills/memory-system/scripts/recall <keyword> (capped rg -i
+- Search memory first: memory/recall <keyword> (capped rg -i
   over memory/). Recall before asking a human.
 - When notes on one theme pile up, split them into a dedicated file — categories emerge on
   demand, never prescribed upfront.
 ```
 
-If this skill is installed globally rather than into the workspace, substitute `~/.agents/skills/memory-system/` for `.agents/skills/memory-system/` throughout (recall path, prompt files).
+The memory block uses the recall path installed in §2 (default `memory/recall`). If this skill is installed globally rather than into the workspace, substitute `~/.agents/skills/memory-system-setup/` for `.agents/skills/memory-system-setup/` in the setup commands below.
 
 Why it is written this way:
 
@@ -53,11 +53,12 @@ mkdir -p memory/diary memory/dream memory/janitor memory/friend memory/group
 printf '| name | platform | id | note |\n| --- | --- | --- | --- |\n' > memory/contacts.md
 printf '# Lessons\n\n<!-- one line each: YYYY-MM-DD — lesson (source) -->\n' > memory/lesson.md
 touch memory/archive.md
+install -m 755 .agents/skills/memory-system-setup/scripts/recall memory/recall
 ```
 
 Seeded headers keep the first writer from inventing a schema of its own. If the workspace is a git repo, add `memory/` to `.gitignore` — these are private notes, not project files.
 
-recall ships with this skill at `scripts/recall` — a capped ripgrep over `memory/`, in three tiers:
+recall ships with this skill at `scripts/recall`; the setup block installs it into the workspace — `memory/recall` is the default (recall searches only `*.md`, so it never greps itself), but any in-workspace path works if the memory block matches. Once copied, the system no longer depends on the skill staying installed. It runs a capped ripgrep over `memory/`, in three tiers:
 
 - evergreen (contacts / lesson / friend / group / emergent top-level notes) first, capped at 30 lines;
 - dated files (diary / dream / janitor) in reverse-date order, capped at 50 lines — recent first;
@@ -80,7 +81,7 @@ Goal-less free association, producing a dream log. Prompt: [prompts/dream.txt](p
 
 ```bash
 yomi cron create --name dream --schedule "33 3 * * *" \
-  --message "$(cat .agents/skills/memory-system/prompts/dream.txt)"
+  --message "$(cat .agents/skills/memory-system-setup/prompts/dream.txt)"
 ```
 
 Design notes: the "no goals, tangents welcome" step is the soul — give a dream a goal and it degenerates into a daily report. Sleep-talk is "may", never "must"; with no broadcast channel, delete that step from the prompt before creating the job.
@@ -91,7 +92,7 @@ Memory housekeeping + self-evolution (distilling repeated workflows into skills)
 
 ```bash
 yomi cron create --name janitor --schedule "55 5 * * *" \
-  --message "$(cat .agents/skills/memory-system/prompts/janitor.txt)"
+  --message "$(cat .agents/skills/memory-system-setup/prompts/janitor.txt)"
 ```
 
 Design notes: the iron rules come first — an autonomous cron gets its read/write boundaries hard-coded up front. The "Suggestions" section gives uncertain changes an outlet. The mandatory "nothing today" file makes cron liveness checkable.
