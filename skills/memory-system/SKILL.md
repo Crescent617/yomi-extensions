@@ -24,7 +24,9 @@ Memory persists under ./memory/:
   a structured table. Consult before DMing, @-mentioning, or resolving a sender; record new
   IDs as they surface.
 - ./memory/lesson.md: my behavioral lessons, one line each — date + lesson + source.
-- ./memory/friend/, ./memory/group/: frozen archives; no new files, retrieval reference only.
+- ./memory/friend/, ./memory/group/: living profiles of people and groups, one file per
+  subject — update in place as knowledge deepens, add files for new subjects; they hold
+  current state, so judicious editing is expected (unlike the diary).
 - ./memory/archive.md: append-only archive. Stale entries move here (source + archive date
   noted) instead of being deleted. Never pruned; grep it, never read it whole.
 - Volatile facts with an authoritative source elsewhere (requirement progress, MR status,
@@ -39,7 +41,7 @@ If this skill is installed globally rather than into the workspace, point the re
 
 Why it is written this way:
 
-- **Append-only is the root of trust** — history can't be silently revised; errors get corrections, not edits.
+- **Append-only is the root of trust** — history can't be silently revised; errors get corrections, not edits. Profiles (friend/, group/) are the exception: they hold current state, not history, and update in place.
 - **Sources, not snapshots** — volatile facts (statuses, schedules) don't rot into wrong facts.
 - **"Recall before asking" is a command**, not an aspiration — it builds the retrieval habit.
 - **Categories emerge on demand** — dream/ and janitor/ themselves split off this way.
@@ -47,11 +49,9 @@ Why it is written this way:
 ## 2. Directory + recall
 
 ```bash
-mkdir -p memory/diary memory/dream memory/janitor
+mkdir -p memory/diary memory/dream memory/janitor memory/friend memory/group
 touch memory/contacts.md memory/lesson.md memory/archive.md
 ```
-
-`friend/` and `group/` are deliberately not created — frozen archives appear when there is something to freeze, not at birth.
 
 recall ships with this skill at `scripts/recall` — a capped ripgrep over `memory/`:
 
@@ -117,7 +117,8 @@ in daylight.
    messages, and keep the total volume in check.
 3. Housekeeping:
    - contacts.md: record newly seen IDs (Lark open_id, GitLab user id, ...) into the table;
-   - friend/ and group/ are frozen archives — no new files; move stale entries to
+   - friend/ and group/ are living profiles — update entries in place as people and
+     groups evolve, create files for new subjects; only truly dead material moves to
      memory/archive.md (source + archive date noted); archive is append-only;
    - lesson.md: dedupe, keep one line per lesson;
    - when notes on one theme pile up, split them into a dedicated file (categories emerge
