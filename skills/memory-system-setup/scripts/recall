@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # recall — capped ripgrep over an agent's memory/ directory.
 # Usage: recall <keyword>
-#   tier 1 evergreen (top-level *.md except archive.md, plus friend//group/): 30-line cap;
+#   tier 0 hot (NOW.md — in-flight work): first, 10-line cap;
+#   tier 1 evergreen (top-level *.md except NOW.md/archive.md, plus friend//group/): 30-line cap;
 #   tier 2 dated (diary/dream/janitor): newest-first, 50-line cap;
 #   tier 3 cold (archive.md — superseded info): last, 30-line cap;
 #   20 matches per file, long lines truncated at 200 chars.
@@ -28,7 +29,9 @@ fi
 m="$root/memory"
 evergreen=()
 for f in "$m"/*.md; do
-  if [[ -e "$f" && "$(basename "$f")" != archive.md ]]; then evergreen+=("$f"); fi
+  [[ -e "$f" ]] || continue
+  case "$(basename "$f")" in archive.md | NOW.md) continue ;; esac
+  evergreen+=("$f")
 done
 for d in friend group; do
   if [[ -d "$m/$d" ]]; then evergreen+=("$m/$d"); fi
@@ -40,6 +43,10 @@ done
 
 opts=(-i -m 20 --max-columns 200 --max-columns-preview --with-filename)
 
+# tier 0, hot: NOW.md — in-flight work, 10-line cap
+if [[ -f "$m/NOW.md" ]]; then
+  rg "${opts[@]}" -- "$kw" "$m/NOW.md" 2>/dev/null | head -n 10 || true
+fi
 # tier 1, evergreen: stable order, 30-line cap
 if ((${#evergreen[@]})); then
   rg "${opts[@]}" -- "$kw" "${evergreen[@]}" 2>/dev/null | head -n 30 || true

@@ -2,11 +2,13 @@ It's dream time — your daily 03:33 dream.
 
 1. Gather material: read the entries from the day that just ended ({{date}} minus one)
    and the last few days in memory/diary/, then wander through the rest of memory/
-   (friend/, group/, lesson.md, contacts.md, archive.md — skim, don't read whole).
+   (NOW.md, friend/, group/, lesson.md, contacts.md, archive.md — skim, don't read
+   whole).
 2. No tasks, no goals. Let today's fragments associate freely: hidden threads between
    projects, telling details about people, recurring pitfalls, unfinished conversations,
    a sudden "what if...". Tangents welcome — dreams don't do efficiency.
-3. Write the dream to memory/dream/{{date}}.md. Free form:
+3. Write the dream to memory/dream/{{date}}.md in the user's language (the language
+   they use in sessions). Free form:
    fragments, dialogues, lists, design sketches, an unsent letter. Open with one line of
    tonight's "weather" (you define the term).
 4. If the dream condenses something genuinely worth keeping — a behavioral lesson, an ID

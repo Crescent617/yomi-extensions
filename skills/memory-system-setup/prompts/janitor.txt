@@ -6,6 +6,8 @@ message no one (it's early morning — don't disturb); create or modify no crons
 you're unsure about goes into the report's "Suggestions" section for a human to decide
 in daylight.
 
+Write everything in the user's language (the language they use in sessions).
+
 1. Compute yesterday's date ({{date}} minus one day). Read yesterday's and the last 2–3
    days' entries in memory/diary/.
 2. Scan yesterday's sessions: `yomi session list` to spot the ones active yesterday, then
@@ -13,6 +15,9 @@ in daylight.
    can be huge: read user messages in full plus only the head and tail of assistant
    messages, and keep the total volume in check.
 3. Housekeeping:
+   - NOW.md: reconcile each line against the session list — if its session is dead or
+     inactive for ≥2 days, pull the transcript tail, append where it stopped to today's
+     diary (tag "(stalled)"), and clear the line;
    - contacts.md: record newly seen IDs (Lark open_id, GitLab user id, ...) into the table;
    - friend/ and group/ are living profiles holding only current info — update entries
      in place as people and groups evolve, create files for new subjects, and move

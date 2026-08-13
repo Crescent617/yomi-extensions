@@ -16,25 +16,29 @@ The constitution of the system — copy it verbatim into the system prompt or th
 
 Memory persists under ./memory/:
 
-- ./memory/diary/YYYY-MM-DD.md: the default note stream — free-form, append-only, one entry
-  per time heading (e.g. ## 14:30). Record anything: events, observations, people, project
-  threads, todos. Append only, never rewrite; correct a mistake by appending a correction
-  entry at the end. Terse — no pasted conversations or code dumps.
-- ./memory/contacts.md: ID lookup table (Lark open_id, bot app_id, GitLab id, ...), kept as
-  a structured table. Consult before DMing, @-mentioning, or resolving a sender; record new
-  IDs as they surface.
-- ./memory/lesson.md: my behavioral lessons, one line each — date + lesson + source.
+- ./memory/NOW.md: the L0 register — important in-flight work only, one terse line per
+  task, tagged with the session/chat id doing it. Small chores and short-lived runs
+  (dream/janitor) stay out. Claim a line when starting, update in place, and close out via
+  the diary: a line leaves only after its outcome (completion/abort/handoff) is appended
+  to today's diary.
+- ./memory/diary/YYYY-MM-DD.md: the default note stream — free-form, append-only, one
+  entry per time heading (e.g. ## 14:30). Record anything: events, people, project
+  threads, todos. Never rewrite; correct by appending a correction entry. Terse — no
+  pasted conversations or code dumps.
+- ./memory/contacts.md: ID lookup table (Lark open_id, bot app_id, GitLab id, ...).
+  Consult before DMing, @-mentioning, or resolving a sender; record new IDs as they
+  surface.
+- ./memory/lesson.md: behavioral lessons, one line each — date + lesson + source.
 - ./memory/friend/, ./memory/group/: living profiles of people and groups, one file per
-  subject, holding only current info — update in place as knowledge deepens, add files for
-  new subjects, and move superseded facts to archive.md instead of deleting them.
-- ./memory/archive.md: append-only archive. Stale entries move here (source + archive date
-  noted) instead of being deleted. Never pruned; grep it, never read it whole.
-- Volatile facts with an authoritative source elsewhere (requirement progress, MR status,
-  schedules): cite the source, never copy a snapshot.
-- Search memory first: memory/recall <keyword> (capped rg -i
-  over memory/). Recall before asking a human.
+  subject, current info only — update in place, add files for new subjects, move
+  superseded facts to archive.md.
+- ./memory/archive.md: append-only archive for superseded entries (source + archive
+  date noted). Never pruned; grep it, never read it whole.
+- Volatile facts with an authoritative source elsewhere (requirement progress, MR
+  status): cite the source, never copy a snapshot.
+- Search memory first: memory/recall <keyword>. Recall before asking a human.
 - When notes on one theme pile up, split them into a dedicated file — categories emerge on
-  demand, never prescribed upfront.
+  demand.
 ```
 
 The memory block uses the recall path installed in §2 (default `memory/recall`). If this skill is installed globally rather than into the workspace, substitute `~/.agents/skills/memory-system-setup/` for `.agents/skills/memory-system-setup/` in the setup commands below.
@@ -42,6 +46,7 @@ The memory block uses the recall path installed in §2 (default `memory/recall`)
 Why it is written this way:
 
 - **Append-only is the root of trust** — history can't be silently revised; errors get corrections, not edits. Profiles (friend/, group/) are the exception: they hold current state, not history — what goes stale moves to archive.md.
+- **NOW.md is a register, not a cache** — it holds work no slower tier has yet; the close-out-via-diary rule keeps the append-only root of trust intact.
 - **Sources, not snapshots** — volatile facts (statuses, schedules) don't rot into wrong facts.
 - **"Recall before asking" is a command**, not an aspiration — it builds the retrieval habit.
 - **Categories emerge on demand** — dream/ and janitor/ themselves split off this way.
@@ -50,6 +55,7 @@ Why it is written this way:
 
 ```bash
 mkdir -p memory/diary memory/dream memory/janitor memory/friend memory/group
+printf '# Now — important in-flight work only, one terse line each\n<!-- - [sess_or_chat_id] MM-DD — what (where); a line leaves only via a diary entry -->\n' > memory/NOW.md
 printf '| name | platform | id | note |\n| --- | --- | --- | --- |\n' > memory/contacts.md
 printf '# Lessons\n\n<!-- one line each: YYYY-MM-DD — lesson (source) -->\n' > memory/lesson.md
 touch memory/archive.md
@@ -95,11 +101,12 @@ yomi cron create --name janitor --schedule "55 5 * * *" \
   --message "$(cat .agents/skills/memory-system-setup/prompts/janitor.txt)"
 ```
 
-Design notes: the iron rules come first — an autonomous cron gets its read/write boundaries hard-coded up front. The "Suggestions" section gives uncertain changes an outlet. The mandatory "nothing today" file makes cron liveness checkable.
+Design notes: the iron rules come first — an autonomous cron gets its read/write boundaries hard-coded up front. The "Suggestions" section gives uncertain changes an outlet. The mandatory "nothing today" file makes cron liveness checkable. The NOW.md sweep is the dead-session safety net: an orphaned line gets reconstructed from its transcript tail and closed out via the diary.
 
 ## Verification
 
 - [ ] Ask "how did we decide X before?" — the agent runs recall first instead of guessing;
+- [ ] every departed NOW.md line left a same-day diary entry;
 - [ ] `yomi cron list` shows exactly one `dream` and one `janitor`, and `yomi cron get <id>` shows a non-empty message — a failed `cat` still creates the job with an empty prompt, and the unique name then blocks re-creation;
 - [ ] diary files only grow by appends — no rewrites;
 - [ ] after the first scheduled runs, `memory/dream/` and `memory/janitor/` hold dated files;
@@ -112,3 +119,4 @@ Design notes: the iron rules come first — an autonomous cron gets its read/wri
 - `yomi session list` (no `-a`) matches sessions by exact working dir: subdirectory sessions are invisible, and a janitor in the wrong dir (CLI path landing in the daemon's default workspace) scans zero sessions and files "nothing today" forever.
 - A cron's manual `trigger` (run immediately) is suspected broken — verify by waiting for the real schedule, or run the flow by hand once.
 - The janitor's transcript reading must stay capped or its context explodes — don't drop the cap when editing the prompt.
+- Deleting a NOW.md line without a diary entry is silent work loss — the close-out protocol is the integrity rule; without the janitor sweep, a session that dies mid-task leaves NOW.md to rot into a second diary.
