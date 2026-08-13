@@ -50,7 +50,7 @@ created_at: 2026-08-09T10:00:00+08:00
 ## 干活（执行者）
 
 1. 被派到任务后**先签收再动手**（`set ... claimed --by <你的 session id>`，session id 在系统提示的 Environment 段）——签收让工单与现实一致。
-2. 干活。完成 → `set ... done --result "..."`；卡壳 → `set ... blocked --note "..."`。
+2. 干活。完成 → `set ... done --result "..."`；卡壳 → `set ... blocked --note "..."`。过程性的进展/发现写到 blackboard（多 agent 协作时，见 blackboard skill）；工单记状态与结果，不必搬运过程。
 3. 完成标准：工单状态与真实进度一致。口头说"做完了"不算数，文件里 done 才算。
 
 ## 聚合验收（协调者）

@@ -12,6 +12,26 @@ set -euo pipefail
 
 fail() { echo "ticket.sh: $*" >&2; exit 2; }
 
+# edit_in_place <file> <sed args...> — 可移植的就地编辑(BSD/GNU sed 通用)
+edit_in_place() {
+  local file="$1"; shift
+  local tmp="$file.tmp.$$"
+  sed "$@" "$file" > "$tmp" && mv "$tmp" "$file"
+}
+
+# lock <dir> — mkdir 原子锁,包住 set 的读-改-写,防并发双签
+TICKET_LOCKDIR=""
+lock() {
+  TICKET_LOCKDIR="$1/.lock"
+  local n=0
+  until mkdir "$TICKET_LOCKDIR" 2>/dev/null; do
+    n=$((n + 1))
+    [ "$n" -ge 100 ] && fail "lock timeout (stale lock? rmdir '$TICKET_LOCKDIR')"
+    sleep 0.1
+  done
+  trap 'rmdir "$TICKET_LOCKDIR" 2>/dev/null || true' EXIT
+}
+
 slugify() {
   local s
   s="$(printf '%s' "$1" | tr 'A-Z' 'a-z' | sed -E 's/[^a-z0-9]+/-/g; s/^-+|-+$//g' | cut -c1-40)"
@@ -73,10 +93,10 @@ current_status() { # $1=file
 
 upsert_owner() { # $1=file $2=owner
   if grep -q '^owner_session_id:' "$1"; then
-    sed -i '' -E "s/^owner_session_id: .*/owner_session_id: \"$2\"/" "$1"
+    edit_in_place "$1" -E "s/^owner_session_id: .*/owner_session_id: \"$2\"/"
   else
-    sed -i '' -E "/^status: /a\\
-owner_session_id: \"$2\"" "$1"
+    edit_in_place "$1" -E "/^status: /a\\
+owner_session_id: \"$2\""
   fi
 }
 
@@ -96,11 +116,13 @@ cmd_set() {
   [ -f "$file" ] || fail "set: no such file: $file"
   case "$next" in pending|claimed|done|blocked) ;; *) fail "set: bad status '$next'" ;; esac
 
+  lock "$(dirname "$file")"
+
   local cur
   cur="$(current_status "$file")"
   [ -n "$cur" ] || fail "set: no status line in $file"
 
-  # 状态机：pending->claimed|done|blocked；claimed->done|blocked|pending；
+  # 状态机：pending->claimed；claimed->done|blocked|pending；
   # blocked->claimed（复工）；done 不流转（要重做请新建工单）。
   case "$cur->$next" in
     "pending->claimed"|"claimed->done"|"claimed->blocked"|"blocked->claimed"|"claimed->pending") ;;
@@ -110,10 +132,10 @@ cmd_set() {
 
   [ "$next" = "claimed" ] && [ -z "$by" ] && fail "set: claimed 需要 --by <session_id>"
 
-  sed -i '' -E "s/^status: .*/status: $next/" "$file"
+  edit_in_place "$file" -E "s/^status: .*/status: $next/"
   case "$next" in
     claimed) upsert_owner "$file" "$by" ;;
-    pending) sed -i '' -E '/^owner_session_id:/d' "$file" ;;
+    pending) edit_in_place "$file" -E '/^owner_session_id:/d' ;;
   esac
 
   if [ "$next" = "done" ]; then
