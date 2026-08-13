@@ -81,6 +81,8 @@ Two creation paths:
 
 Either way: fixed names `dream` and `janitor` (unique + ensure semantics — re-running setup never spawns duplicates), `--session` unset so each job gets its own dedicated session and the main session is never disturbed, `{{date}}` expands to the run date, schedules are 5-field expressions in local time. Later edits to a prompt file don't propagate to an existing job — recreate it (delete + create).
 
+Language: the shipped prompts are English templates — translate the message into the user's language (resolved from your conversation) when creating each job. A detached cron session has no conversation to inherit its language from, and a prompt in the user's language makes every output — dream log, janitor report, memory edits — come out in that language by default. Translate faithfully: iron rules, caps, and may/must distinctions must survive; translate, don't paraphrase.
+
 ### dream — daily 03:33 (`33 3 * * *`)
 
 Goal-less free association, producing a dream log. Prompt: [prompts/dream.txt](prompts/dream.txt).
@@ -107,7 +109,7 @@ Design notes: the iron rules come first — an autonomous cron gets its read/wri
 
 - [ ] Ask "how did we decide X before?" — the agent runs recall first instead of guessing;
 - [ ] every departed NOW.md line left a same-day diary entry;
-- [ ] `yomi cron list` shows exactly one `dream` and one `janitor`, and `yomi cron get <id>` shows a non-empty message — a failed `cat` still creates the job with an empty prompt, and the unique name then blocks re-creation;
+- [ ] `yomi cron list` shows exactly one `dream` and one `janitor`, and `yomi cron get <id>` shows a non-empty message in the user's language, iron rules and caps intact — a failed `cat` still creates the job with an empty prompt, and the unique name then blocks re-creation;
 - [ ] diary files only grow by appends — no rewrites;
 - [ ] after the first scheduled runs, `memory/dream/` and `memory/janitor/` hold dated files;
 - [ ] the janitor report contains a "Suggestions" section (even an empty one).

@@ -6,8 +6,6 @@ message no one (it's early morning — don't disturb); create or modify no crons
 you're unsure about goes into the report's "Suggestions" section for a human to decide
 in daylight.
 
-Write everything in the user's language (the language they use in sessions).
-
 1. Compute yesterday's date ({{date}} minus one day). Read yesterday's and the last 2–3
    days' entries in memory/diary/.
 2. Scan yesterday's sessions: `yomi session list` to spot the ones active yesterday, then
