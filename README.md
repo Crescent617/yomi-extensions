@@ -8,7 +8,7 @@ skills 住 [`skills/`](skills/) 子目录，其他资产类型（如模板）各
 
 | 类型 | 资产 | 说明 |
 |---|---|---|
-| skill | [`skills/task-tickets/`](skills/task-tickets/SKILL.md) | 工单约定：`.yomi/tickets/` 目录、派单/签收/状态机、聚合验收、僵尸回收 |
+| skill | [`skills/task-tickets/`](skills/task-tickets/SKILL.md) | 工单约定：`.yomi/tickets/` 目录、派单/签收/状态机、聚合验收 |
 | skill | [`skills/blackboard/`](skills/blackboard/SKILL.md) | 多 agent 黑板（blackboard）：`.yomi/boards/<feature>.md` 每 feature 一块 board，共享 peer 的 progress 与 findings（与 task-tickets 互补：ticket 管任务流转，blackboard 管 peer visibility） |
 | skill | [`skills/memory-system-setup/`](skills/memory-system-setup/SKILL.md) | 一次性 bootstrap agent 记忆系统：AGENTS.md 记忆块、memory/ 目录（NOW.md 在途工作层 + diary + recall 检索）、dream + janitor 自进化 cron；装完即弃 |
 
