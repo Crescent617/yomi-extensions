@@ -60,6 +60,15 @@ cmd_new() {
     printf 'status: pending\n'
     printf 'created_at: %s\n' "$(now_rfc3339)"
     printf -- '---\n\n'
+    cat <<'RULES'
+> **工单规则**（编辑本文件前必读；没装 task-tickets skill 也按此来）：
+> - 状态机：pending → claimed → done | blocked；blocked → claimed（复工）；claimed → pending（重置）；done 终态不流转（重做请新建工单）。
+> - 签收：status 改 claimed；frontmatter 加 `owner_session_id: "sess_..."`（自己的 session id）。
+> - 完结：status 改 done；文末补 `## Result` 节（结果摘要 + 产物路径）。
+> - 卡壳：status 改 blocked；文末追加 `> [YYYY-MM-DD] 卡点与需要`。
+> - frontmatter 键名不动；别加 updated_at（显示时间由文件 mtime 派生）。
+RULES
+    printf '\n'
     [ -n "$body" ] && printf '%s\n' "$body"
   } > "$file"
 

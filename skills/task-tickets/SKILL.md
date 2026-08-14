@@ -40,18 +40,25 @@ owner_session_id: sess_...    # 签收时填自己的 session id
 created_at: 2026-08-09T10:00:00+08:00
 ---
 
+> **工单规则**（编辑本文件前必读；没装 task-tickets skill 也按此来）：
+> - 状态机：pending → claimed → done | blocked；blocked → claimed（复工）；claimed → pending（重置）；done 终态不流转（重做请新建工单）。
+> - 签收：status 改 claimed；frontmatter 加 `owner_session_id: "sess_..."`（自己的 session id）。
+> - 完结：status 改 done；文末补 `## Result` 节（结果摘要 + 产物路径）。
+> - 卡壳：status 改 blocked；文末追加 `> [YYYY-MM-DD] 卡点与需要`。
+> - frontmatter 键名不动；别加 updated_at（显示时间由文件 mtime 派生）。
+
 任务描述 + 可检查的验收标准。
 
 ## Result
 （完成时写：结果摘要 + 关键产物路径）
 ```
 
-id 是 7 位随机字母数字串（如 `t3m9q2x`），脚本建单自动铸造——kernel 投影取文件名第一个 `-` 前为 id。
+顶部规则块由建单脚本自动注入——**工单自解释，执行者无需安装本 skill**。id 是 7 位随机字母数字串（如 `t3m9q2x`），脚本建单自动铸造——kernel 投影取文件名第一个 `-` 前为 id。
 
 ## 派活（协调者）
 
 1. 拆工作包，每包用脚本 `new` 建单。派工单正文要上下文写全——执行者没有你的上下文，工单就是它知道的一切。
-2. spawn 子 agent 时在 prompt 里**指明它的工单路径**（"你的单是 `.yomi/tickets/t3m9q2x-xxx.md`"）；一批任务可以并发派多个。
+2. spawn 子 agent 时在 prompt 里**指明它的工单路径**（"你的单是 `.yomi/tickets/t3m9q2x-xxx.md`"）；一批任务可以并发派多个。工单顶部自带编辑规则，执行者没装本 skill 也能照做。
 3. 完成标准：每个工作包都有工单且已随 spawn 指派，`grep -l "status: pending" .yomi/tickets/*.md` 能列出全部未签收工单。
 
 ## 干活（执行者）
