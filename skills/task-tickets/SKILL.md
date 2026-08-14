@@ -7,19 +7,26 @@ description: 工单（tickets）派活与跨 session 待办：一个任务一个
 
 tickets 是工作区里的 `.yomi/tickets/` 目录，一个任务一个工单文件，跨 session 持久。**核心用法是派活：工单文件就是派工单，状态在文件里流转，别人发现你工作的唯一途径就是工单状态。**
 
-## 生命周期操作：一律走脚本
+## 建单：走脚本
 
-建单和状态流转用 `scripts/ticket.sh`（在本 skill 目录下），不用手写 frontmatter——脚本保证 id/slug/时间戳/格式合规，并拒绝非法状态流转：
+建单用 `scripts/ticket.sh`（在本 skill 目录下），不手写 frontmatter——脚本保证 id/slug/时间戳/格式合规：
 
 ```bash
-S=<baseDir>/scripts/ticket.sh
-
-$S new --dir <工作区> --title "任务名" --body "描述 + 验收标准"   # 建单，输出文件路径
-$S set <文件> claimed --by <你的 session id>                    # 签收
-$S set <文件> done --result "结果摘要 + 产物路径"               # 完结
-$S set <文件> blocked --note "卡在哪、需要什么"                 # 卡壳
-$S set <文件> pending --note "原因"                             # 重置（清 owner）
+<baseDir>/scripts/ticket.sh new --dir <工作区> --title "任务名" --body "描述 + 验收标准"   # 输出文件路径
 ```
+
+`--body` 缺省且 stdin 非 tty 时从 stdin 读。
+
+## 状态流转：直接改文件
+
+状态机：`pending → claimed → done | blocked`；`blocked → claimed`（复工）；`claimed → pending`（重置）；`done` 是终态不流转（要重做请新建工单）。
+
+- **签收**：`status:` 改 `claimed`；frontmatter 加（或改）一行 `owner_session_id: "sess_..."`——填自己的 session id（在系统提示的 Environment 段）。
+- **完结**：`status:` 改 `done`；正文末尾补一节标题恰为 `## Result` 的结果段（结果摘要 + 关键产物路径）。
+- **卡壳**：`status:` 改 `blocked`；正文末尾追加一行 `> [YYYY-MM-DD] 卡在哪、需要什么`。
+- **重置回 pending**：`status:` 改 `pending`；删掉 `owner_session_id:` 行；可追加备注行说明原因。
+
+改 frontmatter 时注意：键名不动；**别加 `updated_at`**（显示时间由文件 mtime 派生）。
 
 ## 文件格式
 
@@ -39,7 +46,7 @@ created_at: 2026-08-09T10:00:00+08:00
 （完成时写：结果摘要 + 关键产物路径）
 ```
 
-手工编辑正文时注意：frontmatter 键名不动；**别加 `updated_at`**（显示时间由文件 mtime 派生）；id 是 7 位随机字母数字串（如 `t3m9q2x`），脚本建单自动铸造——kernel 投影取文件名第一个 `-` 前为 id。
+id 是 7 位随机字母数字串（如 `t3m9q2x`），脚本建单自动铸造——kernel 投影取文件名第一个 `-` 前为 id。
 
 ## 派活（协调者）
 
@@ -49,8 +56,8 @@ created_at: 2026-08-09T10:00:00+08:00
 
 ## 干活（执行者）
 
-1. 被派到任务后**先签收再动手**（`set ... claimed --by <你的 session id>`，session id 在系统提示的 Environment 段）——签收让工单与现实一致。
-2. 干活。完成 → `set ... done --result "..."`；卡壳 → `set ... blocked --note "..."`。过程性的进展/发现写到 blackboard（多 agent 协作时，见 blackboard skill）；工单记状态与结果，不必搬运过程。
+1. 被派到任务后**先签收再动手**（按「状态流转」节置 claimed + 填 owner）——签收让工单与现实一致。
+2. 干活。完成置 done 写 Result；卡壳置 blocked 写清卡点。过程性的进展/发现写到 blackboard（多 agent 协作时，见 blackboard skill）；工单记状态与结果，不必搬运过程。
 3. 完成标准：工单状态与真实进度一致。口头说"做完了"不算数，文件里 done 才算。
 
 ## 聚合验收（协调者）
@@ -62,4 +69,4 @@ created_at: 2026-08-09T10:00:00+08:00
 ## 捡活（跨 session 接手）
 
 - 新 session 开工前、或手上活干完时：`grep -l "status: pending" .yomi/tickets/*.md` 看待办。
-- `claimed` 但文件 mtime 超过 30 分钟未更新的多半是僵尸（认领者已死）：`set ... pending --note "僵尸回收：认领者失联"`，然后自己签收接着干。
+- `claimed` 但文件 mtime 超过 30 分钟未更新的多半是僵尸（认领者已死）：重置回 pending（删 owner、备注"僵尸回收：认领者失联"），然后自己签收接着干。
