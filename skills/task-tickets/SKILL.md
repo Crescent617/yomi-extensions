@@ -1,6 +1,6 @@
 ---
 name: task-tickets
-description: 工单（tickets）派活与跨 session 待办：一个任务一个 md 文件，落在工作区 .yomi/tickets/。Use when 拆解任务派发给 subagent 并发执行、回报或更新任务进度、验收聚合子 agent 产出，或新 session 接手未完成工作时。
+description: 工单（tickets）派活与跨 session 待办：一个任务一个 md 文件，落在工作区 .yomi/tickets/。Use when 拆解任务派发给 subagent 并发执行、回报或更新任务进度、验收聚合子 agent 产出时。
 ---
 
 # Tickets
@@ -65,8 +65,3 @@ id 是 7 位随机字母数字串（如 `t3m9q2x`），脚本建单自动铸造�
 1. `grep "^status:" .yomi/tickets/*.md` 一把看全局；子 agent 会自己更新文件，汇总靠读文件，不逐个发消息追问。
 2. 全部 done 后统一验收（可派 `verifier` 模板做独立验收），通过的文件 `mv` 进 `.yomi/tickets/archive/`。
 3. 完成标准：主目录只剩未完结工单。
-
-## 捡活（跨 session 接手）
-
-- 新 session 开工前、或手上活干完时：`grep -l "status: pending" .yomi/tickets/*.md` 看待办。
-- `claimed` 但文件 mtime 超过 30 分钟未更新的多半是僵尸（认领者已死）：重置回 pending（删 owner、备注"僵尸回收：认领者失联"），然后自己签收接着干。
