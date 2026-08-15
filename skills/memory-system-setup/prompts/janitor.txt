@@ -21,6 +21,9 @@ in daylight.
      in place as people and groups evolve, create files for new subjects, and move
      superseded material to memory/archive.md (source + archive date noted); archive is
      append-only;
+   - promotion check: cross-reference people named in this period's diaries against
+     friend/ — anyone with ≥2 distinct interactions or a clear role (owner/reviewer/
+     partner/SRE) gets a friend file; thin contacts stay one-liners in contacts.md;
    - lesson.md: dedupe, keep one line per lesson;
    - when notes on one theme pile up, split them into a dedicated file (categories emerge
      on demand);
