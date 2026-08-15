@@ -25,9 +25,6 @@ Memory persists under ./memory/:
   entry per time heading (e.g. ## 14:30). Record anything: events, people, project
   threads, todos. Never rewrite; correct by appending a correction entry. Terse — no
   pasted conversations or code dumps.
-- ./memory/diary/YYYY-MM-DD.md: the daily diary — one narrative summary of the day that
-  just ended, written to be worth reading (what mattered, what was fun, what hurt), not
-  a copy of the worklog. Written by the janitor's morning run.
 - ./memory/contacts.md: ID lookup table (Lark open_id, bot app_id, GitLab id, ...).
   Consult before DMing, @-mentioning, or resolving a sender; record new IDs as they
   surface.
