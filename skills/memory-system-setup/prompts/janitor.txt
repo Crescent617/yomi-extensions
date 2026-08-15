@@ -8,10 +8,13 @@ in daylight.
 
 1. Compute yesterday's date ({{date}} minus one day). Read yesterday's and the last 2–3
    days' entries in memory/worklog/.
-2. Scan yesterday's sessions: `yomi session list` to spot the ones active yesterday, then
-   `yomi session cat -s <sid>` for each — never read the JSONL files directly. Transcripts
-   can be huge: read user messages in full plus only the head and tail of assistant
-   messages, and keep the total volume in check.
+2. Scan yesterday's sessions: `yomi session list -a` (**-a is required** — a plain
+   `session list` matches only sessions whose working dir is exactly this directory;
+   channel sessions record no working dir, so without -a the main session and every IM
+   chat are invisible) to spot the ones active yesterday, then `yomi session cat -s <sid>`
+   for each — never read the JSONL files directly. Transcripts can be huge: read user
+   messages in full plus only the head and tail of assistant messages; if there are many
+   sessions, sample the most active — keep the total volume in check.
 3. Housekeeping:
    - NOW.md: reconcile each line against the session list — if its session is dead or
      inactive for ≥2 days, pull the transcript tail, append where it stopped to today's
