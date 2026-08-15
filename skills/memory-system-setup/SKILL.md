@@ -120,7 +120,6 @@ Design notes: the iron rules come first — an autonomous cron gets its read/wri
 
 - Job names are unique **daemon-wide**: one daemon hosts one memory system as shipped. A second workspace's `dream` create short-circuits to the first workspace's job — for a second instance, derive the namespace from the workspace root directory name (`~/repos/foo` → `dream:foo`, `janitor:foo`): a fixed derivation, so re-setup computes the same name; same-basename workspaces still collide.
 - The janitor's `yomi session list/cat` calls need the yomi CLI on the cron session's PATH.
-- The janitor must list sessions with `-a`: plain `yomi session list` matches only the exact working dir, and channel sessions record no working dir — without `-a` the janitor sees a handful of cron sessions and misses the main session plus every IM chat.
 - A cron's manual `trigger` (run immediately) is suspected broken — verify by waiting for the real schedule, or run the flow by hand once.
 - The janitor's transcript reading must stay capped or its context explodes — don't drop the cap when editing the prompt.
 - Deleting a NOW.md line without a worklog entry is silent work loss — the close-out protocol is the integrity rule; without the janitor sweep, a session that dies mid-task leaves NOW.md to rot into a second worklog.
