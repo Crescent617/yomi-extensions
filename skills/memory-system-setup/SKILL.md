@@ -32,8 +32,7 @@ Memory persists under ./memory/:
 - ./memory/friend/, ./memory/group/: living profiles of people and groups, one file per
   subject, current info only — update in place, add files for new subjects, move
   superseded facts to archive.md. Promotion bar: ≥2 distinct interactions or a clear
-  role (owner/reviewer/partner/SRE) earns a friend file; thin contacts stay one-liners
-  in contacts.md.
+  role earns a friend file; thin contacts stay one-liners in contacts.md.
 - ./memory/archive.md: append-only archive for superseded entries (source + archive
   date noted). Never pruned; grep it, never read it whole.
 - Volatile facts with an authoritative source elsewhere (requirement progress, MR
