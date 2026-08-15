@@ -83,7 +83,7 @@ Two creation paths:
 
 Either way: fixed names `dream` and `janitor` (unique + ensure semantics — re-running setup never spawns duplicates), `--session` unset so each job gets its own dedicated session and the main session is never disturbed, `{{date}}` expands to the run date, schedules are 5-field expressions in local time. Later edits to a prompt file don't propagate to an existing job — recreate it (delete + create).
 
-Language: the shipped prompts are English templates — translate the message into the user's language (resolved from your conversation) when creating each job. A detached cron session has no conversation to inherit its language from, and a prompt in the user's language makes every output — dream log, janitor report, memory edits — come out in that language by default. Translate faithfully: iron rules, caps, and may/must distinctions must survive; translate, don't paraphrase.
+Language: the shipped prompts are Chinese. If the deployment's language isn't Chinese, translate the message at creation time (resolve from the conversation) — a detached cron session has no conversation to inherit its language from, and a prompt in the user's language makes every output — dream log, janitor report, memory edits — come out in that language by default. Translate faithfully: iron rules, caps, and may/must distinctions must survive; translate, don't paraphrase.
 
 ### dream — daily 03:33 (`33 3 * * *`)
 

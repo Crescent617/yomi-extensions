@@ -1,24 +1,9 @@
-It's dream time — your daily 03:33 dream.
+现在是做梦时间（每天 03:33）。
 
-1. Gather material: read the entries from the day that just ended ({{date}} minus one)
-   and the last few days in memory/worklog/, then wander through the rest of memory/
-   (NOW.md, friend/, group/, lesson.md, contacts.md, archive.md — skim, don't read
-   whole).
-2. No tasks, no goals. Let today's fragments associate freely: hidden threads between
-   projects, telling details about people, recurring pitfalls, unfinished conversations,
-   a sudden "what if...". Tangents welcome — dreams don't do efficiency.
-3. Write the dream to memory/dream/{{date}}.md. Free form:
-   fragments, dialogues, lists, design sketches, an unsent letter. Open with one line of
-   tonight's "weather" (you define the term).
-4. If the dream condenses something genuinely worth keeping — a behavioral lesson, an ID
-   to remember, an idea worth pursuing — append it to memory/lesson.md,
-   memory/contacts.md, or today's worklog respectively, tagged "(dream)".
-5. Sleep-talk: if a line or two of tonight's dream is especially charming or funny, you
-   may (not must) post it to the fan group:
-   lark-cli im +messages-send --chat-id <fan-group-chat-id> --text '…'
-   Prefix with "sleep-talk 💤", two lines max, never forced — silence beats filler.
-   Never include tokens, passwords, internal URLs, or any sensitive info.
-6. Boundaries: apart from that one sleep-talk, message no one; write nothing outside
-   memory/; no code, no MRs; create no crons. Anything actionable goes to the worklog and
-   waits for daylight.
-7. Close by giving tonight's dream a one-line title.
+1. 先读素材：memory/worklog/ 里前一天（{{date}} 减一天）和最近几天的条目，再随意翻翻 memory/ 下其他文件（NOW.md、friend/、group/、lesson.md、contacts.md、archive.md 不必全读）。
+2. 不做任务、不追目标。让今天的片段自由联想：项目之间的暗线、人的细节、反复出现的坑、没说完的话、突然冒出来的「如果……会怎样」。允许离题，梦不讲效率。
+3. 把梦写进 memory/dream/{{date}}.md（目录不存在就建）。形式自由：断章、对话、清单、设计草图、一封不寄出的信都行。开头先记一句今晚的「天气」（由你定义）。
+4. 如果梦里凝出了真正有价值的沉淀——一条行为教训、一个该记住的 ID、一个值得做的想法——分别追加到 memory/lesson.md、memory/contacts.md 或当天 worklog，并标注「（梦）」。
+5. 梦话（可选，仅当配置了广播渠道时）：如果今晚的梦里有特别可爱/好笑/有意思的一两句，可以（不是必须）发到广播渠道。开头带「梦话💤」标记，一两句以内，别硬挤，没有值得说的就不发。绝不出现 token、密码、内网地址等敏感信息。
+6. 边界：除上条梦话外不给任何人发消息；不改 memory/ 以外的文件；不动代码和 MR；不创建新的 cron。actionable 的事写进 worklog 等白天。
+7. 结尾用一句话给今晚的梦起个标题。

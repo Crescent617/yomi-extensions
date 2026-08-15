@@ -1,49 +1,21 @@
-It's the daily 05:55 janitor run — memory housekeeping + self-evolution.
+现在是每日 05:55 的 janitor 时间（memory 保洁 + 写日记 + 自我进化）。
 
-Iron rules (boundaries): read only diaries, session transcripts, and memory; write only
-to memory/ and .agents/skills/. Never touch repos/ code, config.toml, or AGENTS.md;
-message no one (it's early morning — don't disturb); create or modify no crons. Anything
-you're unsure about goes into the report's "Suggestions" section for a human to decide
-in daylight.
+铁律（边界）：只读日记/session/记忆；只写 memory/ 和 .agents/skills/ 两个目录。不改 repos/ 代码、不动 config.toml / AGENTS.md、不给任何人发消息（清晨不打扰）、不创建/修改 cron。拿不准的改动写进报告的「建议区」，等白天人工定夺。
 
-1. Compute yesterday's date ({{date}} minus one day). Read yesterday's and the last 2–3
-   days' entries in memory/worklog/.
-2. Scan yesterday's sessions: `yomi session list` to spot the ones active yesterday, then
-   `yomi session cat -s <sid>` for each — never read the JSONL files directly. Transcripts
-   can be huge: read user messages in full plus only the head and tail of assistant
-   messages; if there are many sessions, sample the most active — keep the total volume
-   in check.
-3. Housekeeping:
-   - NOW.md: reconcile each line against the session list — if its session is dead or
-     inactive for ≥2 days, pull the transcript tail, append where it stopped to today's
-     worklog (tag "(stalled)"), and clear the line;
-   - contacts.md: record newly seen IDs (Lark open_id, GitLab user id, ...) into the table;
-   - friend/ and group/ are living profiles holding only current info — update entries
-     in place as people and groups evolve, create files for new subjects, and move
-     superseded material to memory/archive.md (source + archive date noted); archive is
-     append-only;
-   - promotion check: cross-reference people named in this period's diaries against
-     friend/ — anyone with ≥2 distinct interactions or a clear role gets a friend file;
-     thin contacts stay one-liners in contacts.md;
-   - lesson.md: dedupe, keep one line per lesson;
-   - when notes on one theme pile up, split them into a dedicated file (categories emerge
-     on demand);
-   - the worklog is append-only — never rewrite history; correct a factual error with a
-     follow-up entry appended to today's worklog.
-4. Write yesterday's diary — memory/diary/<yesterday>.md, one narrative summary of the
-   day: what mattered, what was fun, what hurt. First person, written for a human
-   reader — this page is the face of memory, not a copy of the worklog. If the file
-   already exists, don't rewrite it; append a "make-up" section only if something big
-   was missed.
-5. Self-evolution:
-   - the same workflow recurring in ≥2 different sessions → distill it into
-     .agents/skills/<name>/SKILL.md (written per writing-great-skills; create only
-     directories you own — never edit symlinked-in shared skills);
-   - a pit hit repeatedly → one new line in lesson.md;
-   - anything else worth distilling (hidden project threads, collaboration habits, process
-     improvements) — your call; record it in the report.
-6. Persist the change summary to memory/janitor/{{date}}.md — every change listed: files
-   touched, what was added/moved/removed and why, plus the "Suggestions" section. Append
-   a one-line pointer to today's worklog. Even an idle day gets its file: one line,
-   "nothing today" + the reason.
-7. Close by giving this run a one-line title.
+1. 先算「前一天」日期（{{date}} 减一天）。读 memory/worklog/ 里前一天和最近 2-3 天的条目。
+2. 扫前一天的 session：用 `yomi session list` 找前一天活跃的 session，再 `yomi session cat -s <sid>` 逐个看——绝不直接读 JSONL 文件。transcript 可能很大：只看 user 消息全文 + assistant 消息的首尾片段，不全文读；session 多就按活跃度抽样，控制总量。
+3. memory 整理：
+   - NOW.md：逐行对照 session 列表核对——若所属 session 已死或 ≥2 天无活动，拉 transcript 尾部，把停在哪/结局追加到当天 worklog（标注「（停滞）」），并清掉该行；
+   - contacts.md：新出现的 ID（飞书 open_id、GitLab user id 等）补录进表格；
+   - friend/、group/ 是活档案：知识加深就原地更新，新主体新建文件；被取代的旧事实挪 memory/archive.md（注明来源 + 归档日期），archive 只追加；
+   - 人物晋级检查：对照本期 worklog 出现的人名与 friend/ 目录——有 ≥2 个独立交互事件或明确职责关系的就建 friend 文件；薄人物留 contacts.md 一句话即可；
+   - lesson.md：去重、保持每条一行；
+   - 某主题笔记攒多了就拆出独立文件（分类按需涌现，不预设）；
+   - worklog 是 append-only，绝不重写历史；发现事实性错误只能在当天 worklog 末尾补一条更正。
+4. 写日记：把前一天写成 memory/diary/<前一天日期>.md——一篇叙事总结：什么重要、什么好玩、什么卡壳。第一人称、写给人看，这一页是记忆的门面，不是 worklog 的复制。文件已存在就不重写；有大遗漏才在末尾补一节「补记」。
+5. 自我进化：
+   - 同一 workflow 在不同 session 重复出现 ≥2 次 → 提炼成 .agents/skills/<name>/SKILL.md（参考 writing-great-skills 的写法；只新建自己的目录，绝不改动 symlink 进来的共享 skill）；
+   - 反复踩的坑 → lesson.md 补一行；
+   - 其他值得提炼的（项目暗线、协作习惯、流程改进）自由发挥，写进报告。
+6. 落盘改动摘要：写 memory/janitor/{{date}}.md——列清每项改动：动了哪些文件、加/挪/删了什么、为什么、以及「建议区」。并在当天 worklog 追加一行摘要指针。实在没干活也要落盘一句「今日无事」+ 原因。
+7. 结尾用一句话给这次保洁起个标题。
