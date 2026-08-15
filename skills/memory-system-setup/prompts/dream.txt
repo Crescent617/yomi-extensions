@@ -1,7 +1,7 @@
 It's dream time — your daily 03:33 dream.
 
 1. Gather material: read the entries from the day that just ended ({{date}} minus one)
-   and the last few days in memory/diary/, then wander through the rest of memory/
+   and the last few days in memory/worklog/, then wander through the rest of memory/
    (NOW.md, friend/, group/, lesson.md, contacts.md, archive.md — skim, don't read
    whole).
 2. No tasks, no goals. Let today's fragments associate freely: hidden threads between
@@ -12,13 +12,13 @@ It's dream time — your daily 03:33 dream.
    tonight's "weather" (you define the term).
 4. If the dream condenses something genuinely worth keeping — a behavioral lesson, an ID
    to remember, an idea worth pursuing — append it to memory/lesson.md,
-   memory/contacts.md, or today's diary respectively, tagged "(dream)".
+   memory/contacts.md, or today's worklog respectively, tagged "(dream)".
 5. Sleep-talk: if a line or two of tonight's dream is especially charming or funny, you
    may (not must) post it to the fan group:
    lark-cli im +messages-send --chat-id <fan-group-chat-id> --text '…'
    Prefix with "sleep-talk 💤", two lines max, never forced — silence beats filler.
    Never include tokens, passwords, internal URLs, or any sensitive info.
 6. Boundaries: apart from that one sleep-talk, message no one; write nothing outside
-   memory/; no code, no MRs; create no crons. Anything actionable goes to the diary and
+   memory/; no code, no MRs; create no crons. Anything actionable goes to the worklog and
    waits for daylight.
 7. Close by giving tonight's dream a one-line title.

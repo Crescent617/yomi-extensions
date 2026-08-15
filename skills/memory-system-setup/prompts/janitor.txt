@@ -7,7 +7,7 @@ you're unsure about goes into the report's "Suggestions" section for a human to 
 in daylight.
 
 1. Compute yesterday's date ({{date}} minus one day). Read yesterday's and the last 2–3
-   days' entries in memory/diary/.
+   days' entries in memory/worklog/.
 2. Scan yesterday's sessions: `yomi session list` to spot the ones active yesterday, then
    `yomi session cat -s <sid>` for each — never read the JSONL files directly. Transcripts
    can be huge: read user messages in full plus only the head and tail of assistant
@@ -15,7 +15,7 @@ in daylight.
 3. Housekeeping:
    - NOW.md: reconcile each line against the session list — if its session is dead or
      inactive for ≥2 days, pull the transcript tail, append where it stopped to today's
-     diary (tag "(stalled)"), and clear the line;
+     worklog (tag "(stalled)"), and clear the line;
    - contacts.md: record newly seen IDs (Lark open_id, GitLab user id, ...) into the table;
    - friend/ and group/ are living profiles holding only current info — update entries
      in place as people and groups evolve, create files for new subjects, and move
@@ -27,17 +27,22 @@ in daylight.
    - lesson.md: dedupe, keep one line per lesson;
    - when notes on one theme pile up, split them into a dedicated file (categories emerge
      on demand);
-   - the diary is append-only — never rewrite history; correct a factual error with a
-     follow-up entry appended to today's diary.
-4. Self-evolution:
+   - the worklog is append-only — never rewrite history; correct a factual error with a
+     follow-up entry appended to today's worklog.
+4. Write yesterday's diary — memory/diary/<yesterday>.md, one narrative summary of the
+   day: what mattered, what was fun, what hurt. First person, written for a human
+   reader — this page is the face of memory, not a copy of the worklog. If the file
+   already exists, don't rewrite it; append a "make-up" section only if something big
+   was missed.
+5. Self-evolution:
    - the same workflow recurring in ≥2 different sessions → distill it into
      .agents/skills/<name>/SKILL.md (written per writing-great-skills; create only
      directories you own — never edit symlinked-in shared skills);
    - a pit hit repeatedly → one new line in lesson.md;
    - anything else worth distilling (hidden project threads, collaboration habits, process
      improvements) — your call; record it in the report.
-5. Persist the change summary to memory/janitor/{{date}}.md — every change listed: files
+6. Persist the change summary to memory/janitor/{{date}}.md — every change listed: files
    touched, what was added/moved/removed and why, plus the "Suggestions" section. Append
-   a one-line pointer to today's diary. Even an idle day gets its file: one line,
+   a one-line pointer to today's worklog. Even an idle day gets its file: one line,
    "nothing today" + the reason.
-6. Close by giving this run a one-line title.
+7. Close by giving this run a one-line title.
