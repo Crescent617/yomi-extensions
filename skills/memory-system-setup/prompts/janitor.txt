@@ -8,6 +8,7 @@
    - NOW.md：逐行对照 session 列表核对——若所属 session 已死或 ≥2 天无活动，拉 transcript 尾部，把停在哪/结局追加到当天 worklog（标注「（停滞）」），并清掉该行；
    - contacts.md：新出现的 ID（飞书 open_id、GitLab user id 等）补录进表格；
    - friend/、group/ 是活档案：知识加深就原地更新，新主体新建文件；被取代的旧事实挪 memory/archive.md（注明来源 + 归档日期），archive 只追加；
+   - knowledge/ 是主题知识库：从 worklog/diary/session 沉淀稳定知识（项目背景、环境配置、可复用流程、坑的修复方案），一个主题一个文件；知识加深原地更新，过时事实挪 memory/archive.md（注明来源 + 归档日期）；
    - 人物晋级检查：对照本期 worklog 出现的人名与 friend/ 目录——有 ≥2 个独立交互事件或明确职责关系的就建 friend 文件；薄人物留 contacts.md 一句话即可；
    - lesson.md：去重、保持每条一行；
    - 某主题笔记攒多了就拆出独立文件（分类按需涌现，不预设）；

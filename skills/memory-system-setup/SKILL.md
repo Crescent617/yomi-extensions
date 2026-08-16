@@ -56,7 +56,7 @@ Why it is written this way:
 ## 2. Directory + recall
 
 ```bash
-mkdir -p memory/worklog memory/diary memory/dream memory/janitor memory/friend memory/group
+mkdir -p memory/worklog memory/diary memory/dream memory/janitor memory/friend memory/group memory/knowledge
 printf '# Now — important in-flight work only, one terse line each\n<!-- - [sess_or_chat_id] MM-DD — what (where); a line leaves only via a diary entry -->\n' > memory/NOW.md
 printf '| name | platform | id | note |\n| --- | --- | --- | --- |\n' > memory/contacts.md
 printf '# Lessons\n\n<!-- one line each: YYYY-MM-DD — lesson (source) -->\n' > memory/lesson.md
@@ -68,7 +68,7 @@ Seeded headers keep the first writer from inventing a schema of its own. If the 
 
 recall ships with this skill at `scripts/recall`; the setup block installs it into the workspace — `memory/recall` is the default (recall searches only `*.md`, so it never greps itself), but any in-workspace path works if the memory block matches. Once copied, the system no longer depends on the skill staying installed. It runs a capped ripgrep over `memory/`, in three tiers:
 
-- evergreen (contacts / lesson / friend / group / emergent top-level notes) first, capped at 30 lines;
+- evergreen (contacts / lesson / friend / group / knowledge / emergent top-level notes) first, capped at 30 lines;
 - dated files (diary / worklog / dream / janitor) in reverse-date order, capped at 50 lines — recent first;
 - cold (archive.md) last, capped at 30 lines — it stores superseded info, so it ranks below everything current;
 - per-file cap of 20 matches, long lines truncated at 200 chars;
