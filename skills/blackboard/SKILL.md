@@ -1,6 +1,6 @@
 ---
 name: blackboard
-description: 多 agent 共享黑板(blackboard):当前目录 .yomi/boards/<feature>.md,一个 feature 一块 board,让同一 feature 下并行的 agent/subagent 看到彼此的 task、progress 与 findings。Use when 多 agent 协作需要 peer visibility、共享 progress/findings、开工前想知道 peers 在干什么,或提到"黑板 / blackboard / board / peer 进度"。派单/签收/状态机/验收走 task-tickets,不用 blackboard。
+description: 多 agent 共享黑板：.yomi/boards/<feature>.md，一个 feature 一块，让同一 feature 下并行的 agent 互见 task/progress/findings。Use when 多 agent 协作需要 peer visibility、共享进展/发现、开工前想知道 peers 在干什么。派单/签收/验收走 task-tickets。
 ---
 
 # Blackboard 黑板

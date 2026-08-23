@@ -1,6 +1,7 @@
 ---
 name: memory-system-setup
-description: One-time bootstrap of a persistent memory + self-evolution system for an agent workspace. Use when setting up memory for a new agent or workspace, or configuring dream/janitor crons.
+description: 给新 workspace 一次性 bootstrap 持久记忆系统（memory/ 目录 + recall 检索 + dream/janitor 两个常驻 cron）。手动触发：要搭建时说"装记忆系统"。
+disable-model-invocation: true
 ---
 
 # Memory System
@@ -42,16 +43,7 @@ Memory persists under ./memory/:
   demand.
 ```
 
-The memory block uses the recall path installed in §2 (default `memory/recall`). If this skill is installed globally rather than into the workspace, substitute `~/.agents/skills/memory-system-setup/` for `.agents/skills/memory-system-setup/` in the setup commands below.
-
-Why it is written this way:
-
-- **Append-only is the root of trust** — history can't be silently revised; errors get corrections, not edits. That stream lives in worklog/; diary/ is the one curated layer above it. Profiles (friend/, group/) are the other exception: they hold current state, not history — what goes stale moves to archive.md.
-- **Raw first, narrative second** — the worklog guarantees nothing is lost; the diary guarantees someone can actually read it. The janitor is the bridge: it reads the raw stream every morning anyway, so summarizing costs no extra context.
-- **NOW.md is a register, not a cache** — it holds work no slower tier has yet; the close-out-via-worklog rule keeps the append-only root of trust intact.
-- **Sources, not snapshots** — volatile facts (statuses, schedules) don't rot into wrong facts.
-- **"Recall before asking" is a command**, not an aspiration — it builds the retrieval habit.
-- **Categories emerge on demand** — dream/ and janitor/ themselves split off this way.
+The memory block uses the recall path installed in §2 (default `memory/recall`). If this skill is installed globally rather than into the workspace, substitute `~/.agents/skills/memory-system-setup/` for `.agents/skills/memory-system-setup/` in the setup commands below. Design rationale for the block: [references/design.md](references/design.md) — read it before editing the block.
 
 ## 2. Directory + recall
 
