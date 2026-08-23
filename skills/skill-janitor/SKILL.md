@@ -45,7 +45,7 @@ EOF
 
 ## 2. 台账对账
 
-`npx skills` 的台账在 `~/.agents/.skill-lock.json`，update 只认它。三类状态：
+`npx skills` 的全局台账在 `~/.agents/.skill-lock.json`（项目级为 `<project>/skills-lock.json`，同法处理），update 只认它。三类状态：
 
 - **僵尸**（台账有 hash、磁盘无目录）：全量 update 时若源仓库有更新会被**复活**到磁盘——必须清零
 - hash 为空的条目（well-known 系）：update 永远跳过，无害
@@ -75,8 +75,9 @@ while read -r s; do npx -y skills remove -g -y "$s" </dev/null >/dev/null 2>&1 |
 
 ## 4. 结构决策树（整改时的证据给法）
 
-- 子主题触发面差异大、常独立使用 → 保留 sub-SKILL
-- 子主题总连着用 → 合并成 1 个 SKILL.md + `references/*.md`（kernel 只索引顶层，references 永不进索引）
+- 要**独立自动触发** → 必须是顶层 skill（kernel 只索引顶层）
+- 子主题差异大、但总是经父级选后端（如按库选 API）→ 父级路由表 + sub-SKILL（子级不进索引，按需加载）
+- 子主题总连着用 → 合并成 1 个 SKILL.md + `references/*.md`（references 永不进索引）
 - 一次性/季节性 skill → frontmatter 加 `disable-model-invocation: true`，退出自动索引、按名可加载
 - 有源 repo 的（如 yomi-ext）：改动在 repo 做，push 后 `npx skills update -g -y <name...>` 定向更新——update 比对的是**远端** hash，没 push 检不到差异；手工 skill 直接改磁盘
 
