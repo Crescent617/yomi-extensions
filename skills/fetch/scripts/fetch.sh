@@ -52,8 +52,14 @@ case "$mime" in
     fi
     exit 0 ;;
   text/html*)
+    if ! command -v pandoc >/dev/null 2>&1; then
+      echo "需要 pandoc 提取 HTML：brew install pandoc / apt install pandoc"; exit 1
+    fi
     if [ ! -f "$raw.txt" ]; then
-      "$(dirname "$0")/extract.sh" "$raw" > "$raw.txt.$$" && mv "$raw.txt.$$" "$raw.txt"
+      perl -0777 -pe 's{<(script|style|noscript|nav|header|footer|aside)\b[^>]*>.*?</\1\s*>}{}gis' "$raw" \
+        | pandoc -f html -t gfm-raw_html --wrap=none > "$raw.txt.$$" 2>/dev/null
+      [ -s "$raw.txt.$$" ] || { rm -f "$raw.txt.$$"; echo "EXTRACT FAILED: $raw"; exit 1; }
+      mv "$raw.txt.$$" "$raw.txt"
     fi
     head -c 6000 "$raw.txt"
     echo; echo "FULL: $raw.txt (extracted) | raw: $raw ($(fsize "$raw") bytes)" ;;
