@@ -25,12 +25,13 @@ fi
 
 stale=0
 if [ "$fresh" = 0 ]; then
+  tmp=$raw.new.$$   # PID 唯一临时名，并发同 URL 不撕裂
   if curl -sfL --max-time 60 --retry 2 \
        -A "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36" \
-       -o "$raw.new" "$url" && [ -s "$raw.new" ]; then
-    mv "$raw.new" "$raw"; rm -f "$raw.txt"
+       -o "$tmp" "$url" && [ -s "$tmp" ]; then
+    mv "$tmp" "$raw"; rm -f "$raw.txt"   # rename 原子，后到者整体覆盖
   else
-    rm -f "$raw.new"
+    rm -f "$tmp"
     [ -f "$raw" ] && stale=1 || { echo "FETCH FAILED: $url"; exit 1; }
   fi
 fi
@@ -51,7 +52,9 @@ case "$mime" in
     fi
     exit 0 ;;
   text/html*)
-    [ -f "$raw.txt" ] || "$(dirname "$0")/extract.sh" "$raw" > "$raw.txt"
+    if [ ! -f "$raw.txt" ]; then
+      "$(dirname "$0")/extract.sh" "$raw" > "$raw.txt.$$" && mv "$raw.txt.$$" "$raw.txt"
+    fi
     head -c 6000 "$raw.txt"
     echo; echo "FULL: $raw.txt (extracted) | raw: $raw ($(fsize "$raw") bytes)" ;;
   *)
