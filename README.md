@@ -17,6 +17,7 @@ skills 住 [`skills/`](skills/) 子目录，其他资产类型（如模板）各
 | skill | [`skills/writing-great-skills/`](skills/writing-great-skills/SKILL.md) | 写/改 skill 的规范：密度、结构、触发词、自由度、验证回路 |
 | skill | [`skills/planning-with-files/`](skills/planning-with-files/SKILL.md) | 用持久化 markdown（plan/findings/progress）做复杂任务规划与进度追踪，防目标漂移 |
 | skill | [`skills/tmux/`](skills/tmux/SKILL.md) | 远控 tmux session 驱动交互式 CLI：送键、抓屏、读输出 |
+| skill | [`skills/fetch/`](skills/fetch/SKILL.md) | URL 抓取与正文提取：curl 落盘缓存（1h + stale-if-error）+ pup 回退链提取，跨平台，PDF/图片分发 |
 
 janitor 不再单独规划——它作为 memory-system-setup 的两个常驻 cron 之一（完整 prompt）收录在该 skill 中。模板机制（`agent` 工具 `template` 参数、ROLE.md 约定）说明在 yomi 内核的工具 desc 与设计文档中，不再需要单独 skill。官方内置模板 planner/verifier/explorer/reviewer 预置在 yomi 内核（`crates/kernel/src/agent_tmpl/`），不在此仓。
 
