@@ -6,6 +6,7 @@ url=${1:?"usage: fetch.sh <url> [--refresh]"}
 
 dir=${FETCH_CACHE_DIR:-$HOME/.cache/yomi-web}
 mkdir -p "$dir"
+find "$dir" -type f -mtime +7 -delete 2>/dev/null   # 自清理：删 7 天前条目
 
 md5q()  { command -v md5 >/dev/null 2>&1 && md5 -q || md5sum | cut -d' ' -f1; }
 mtime() { stat -f %m "$1" 2>/dev/null || stat -c %Y "$1"; }
