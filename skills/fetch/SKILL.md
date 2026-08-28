@@ -27,12 +27,3 @@ pup 'table' < f.html                 # 表格 HTML
 已有 html 要全文：`scripts/extract.sh f.html`（perl 去 script/style + article→main→body 回退链）。
 要表格/标题层级结构：`command -v pandoc && pandoc -f html -t gfm f.html`，没有则让用户装。
 GBK 乱码：`iconv -f GB18030 -t UTF-8`。
-
-## 信号（如实报告）
-
-- 提取结果极短 + 原文件大 + 多 script → SPA 页，curl 拿不到正文，换源
-- HTTP 403/404 → curl 直接报错码进 `FETCH FAILED`，反爬/源挂如实报
-
-## 走别的通道
-
-飞书 → lark；文献/论文 → lit-search、paper-digest；JSON API → `curl -s | jq`；本地文件 → read。
