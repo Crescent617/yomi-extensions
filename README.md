@@ -1,6 +1,6 @@
 # yomi-extensions
 
-[yomi](https://github.com/Crescent617/yomi) harness 的官方扩展资产库——skills、agent templates，以及未来的更多扩展形态。设计文档见主仓 [`docs/design/agent-harness.md`](https://github.com/Crescent617/yomi/blob/main/docs/design/agent-harness.md)。
+[yomi](https://github.com/Crescent617/yomi) harness 的官方扩展资产库——skills、agent templates，以及未来的更多扩展形态。设计文档见主仓 [`docs/archive/agent-harness.md`](https://github.com/Crescent617/yomi/blob/main/docs/archive/agent-harness.md)。
 
 ## 内容
 
@@ -8,8 +8,7 @@ skills 住 [`skills/`](skills/) 子目录，其他资产类型（如模板）各
 
 | 类型 | 资产 | 说明 |
 |---|---|---|
-| skill | [`skills/task-tickets/`](skills/task-tickets/SKILL.md) | 工单约定：`.yomi/tickets/` 目录、派单/签收/状态机、聚合验收 |
-| skill | [`skills/blackboard/`](skills/blackboard/SKILL.md) | 多 agent 黑板（blackboard）：`.yomi/boards/<feature>.md` 每 feature 一块 board，共享 peer 的 progress 与 findings（与 task-tickets 互补：ticket 管任务流转，blackboard 管 peer visibility） |
+| skill | [`skills/kanban/`](skills/kanban/SKILL.md) | 任务看板：`.yomi/kanban/` 目录即列，一卡一 md、mv 即流转；依赖闸（多父）、review 闸、cron 幂等键、blocked 熔断；卡的 ## Log 承担黑板职责（2026-08-29 起取代 task-tickets 与 blackboard） |
 | skill | [`skills/memory-system-setup/`](skills/memory-system-setup/SKILL.md) | 一次性 bootstrap agent 记忆系统：AGENTS.md 记忆块、memory/ 目录（NOW.md 在途工作层 + diary + recall 检索）、dream + janitor 自进化 cron；装完即弃 |
 | skill | [`skills/grill-me/`](skills/grill-me/SKILL.md) | 就计划/设计对用户穷追猛打式提问，直到决策树每个分支都收敛、达成共识 |
 | skill | [`skills/handoff/`](skills/handoff/SKILL.md) | 任务交接文档方法论：何时写、结构怎么搭、不变量与易变信息分层 |
@@ -28,14 +27,14 @@ skills 用生态通用 CLI（默认识别 `skills/` 子目录，symlink 进 `~/.
 ```bash
 npx skills add Crescent617/yomi-extensions --list    # 预览
 npx skills add Crescent617/yomi-extensions -g        # 全局安装全部
-npx skills add Crescent617/yomi-extensions -g --skill task-tickets   # 只装单个
+npx skills add Crescent617/yomi-extensions -g --skill kanban   # 只装单个
 ```
 
 或手动：
 
 ```bash
 git clone https://github.com/Crescent617/yomi-extensions ~/repos/yomi-extensions
-ln -s ~/repos/yomi-extensions/skills/task-tickets ~/.agents/skills/task-tickets
+ln -s ~/repos/yomi-extensions/skills/kanban ~/.agents/skills/kanban
 ```
 
 templates 不属于 skills 生态：官方模板内核预置、无需安装；本仓的实验性/社区模板手动 symlink 到 `~/.yomi/agents/`。
