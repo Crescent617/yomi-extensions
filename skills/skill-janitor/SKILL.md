@@ -1,6 +1,7 @@
 ---
 name: skill-janitor
 description: 技能库卫生治理：体检（条目数/索引体积/触发面）、台账对账清僵尸、归档冷 skill、update 安全检查。当 skill 越装越多需要整理/精简/清理技能库、怀疑有重复或失效条目、或全量 update 前体检时使用。
+disable-model-invocation: true
 ---
 
 # Skill Janitor 技能库治理
