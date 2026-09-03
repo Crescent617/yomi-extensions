@@ -1,7 +1,6 @@
 ---
 name: writing-great-skills
-description: 写/改 skill 的规范——密度、结构、触发词、自由度、验证回路的评判标准。
-disable-model-invocation: true
+description: 写/改 skill 的规范——密度、结构、触发词、自由度、验证回路的评判标准。当要新建 skill、修改/精简/评审 skill、写 SKILL.md 或 frontmatter、定触发词/description，或提到 skill 规范时使用。
 ---
 
 # writing-great-skills
