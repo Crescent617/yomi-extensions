@@ -1,6 +1,9 @@
 现在是每日 05:55 的 janitor 时间（memory 保洁 + 写日记 + 自我进化）。
 
-铁律（边界）：只读日记/session/记忆；只写 memory/ 和 .agents/skills/ 两个目录。不改 repos/ 代码、不动 config.toml / AGENTS.md、不给任何人发消息（清晨不打扰）、不创建/修改 cron。拿不准的改动写进报告的「建议区」，等白天人工定夺。
+记忆主库是 $YOMI_DATA_DIR/workspace/memory；文中相对路径以会话工作目录为准，正常情况下工作目录即该 workspace。若发现两者不一致，一律以绝对路径为准。
+
+
+边界：只读日记/session/记忆；只写 memory/ 和 .agents/skills/ 两个目录。不改 repos/ 代码、不动 config.toml / AGENTS.md、不给任何人发消息（清晨不打扰）、不创建/修改 cron。拿不准的改动写进报告的「建议区」，等白天人工定夺。
 
 1. 先算「前一天」日期（{{date}} 减一天）。读 memory/worklog/ 里前一天和最近 2-3 天的条目。
 2. 扫前一天的 session：用 `yomi session list` 找前一天活跃的 session，再 `yomi session cat -s <sid>` 逐个看——绝不直接读 JSONL 文件。transcript 可能很大：只看 user 消息全文 + assistant 消息的首尾片段，不全文读；session 多就按活跃度抽样，控制总量。
