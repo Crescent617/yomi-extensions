@@ -1,11 +1,10 @@
 # memory-system 使用约定
 
-持久记忆的主目录是 daemon 默认 workspace 下的 `memory/`——即
-`$YOMI_DATA_DIR/workspace/memory`（本机 `~/.yomi/workspace/memory`）。
-各项目目录不另建记忆库；所有写操作一律落在主目录。下文 `./memory/`
-均指主目录。`recall` 检索自动定位主库（`$RECALL_ROOT` →
-`$YOMI_DATA_DIR/workspace` → 从当前目录向上找 `memory/`），在任何
-工作目录都能用。
+持久记忆的主库是 daemon data_dir 根部的 `memory/`——即
+`$YOMI_DATA_DIR/memory`（本机 `~/.yomi/memory`）。各项目目录不另建
+记忆库；所有写操作一律落在主库。下文 `memory/` 均指主库。`recall`
+检索自动定位主库（`$RECALL_ROOT` → `$YOMI_DATA_DIR` → 从当前目录
+向上找 `memory/`），在任何工作目录都能用。
 
 - `NOW.md`：在途工作寄存器——只记重要在办事项，一行一条，
   标注承运的 session/chat id。小杂事与短周期运行（dream/janitor）不进。
@@ -31,8 +30,8 @@
 - 同一主题的笔记堆多了就拆专文件——分类按需涌现。
 - 问人之前先搜记忆：`recall <关键词>`。
 
-主目录还没初始化时，跑一次 `memory-init`（幂等：缺的目录与种子文件
-才建，已有的不碰）。
+主库还没初始化时，跑一次 `memory-init`（幂等：缺的目录与种子文件
+才建，已有的不碰；缺省初始化 `$YOMI_DATA_DIR/memory`，也可传别的根）。
 
 检索命令 `recall` 由 memory-system 扩展提供（已在 PATH）：分层上限
 检索主目录——NOW.md 最先（10 行上限），evergreen 文件其次（30 行），
