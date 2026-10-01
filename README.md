@@ -8,12 +8,11 @@ skills 住 [`skills/`](skills/) 子目录，扩展包住 [`ext/`](ext/) 子目�
 
 | 类型 | 资产 | 说明 |
 |---|---|---|
-| extension | [`ext/memory-system/`](ext/memory-system/ext.toml) | Agent 持久记忆系统（`yomi extension install Crescent617/yomi-extensions/ext/memory-system`）：记忆纪律进系统提示词、recall 分层检索命令上 PATH、dream/janitor 自进化 cron。取代 memory-system-setup skill。注意：dream/janitor 会话工作目录缺省为 daemon 默认 workspace（`<data_dir>/workspace`）——memory/ 在别处时，装后用 `yomi cron update` 把两条 job 的工作目录改过去 |
+| extension | [`ext/memory-system/`](ext/memory-system/ext.toml) | Agent 持久记忆系统（`yomi extension install Crescent617/yomi-extensions/ext/memory-system`）：记忆纪律进系统提示词、recall 分层检索命令上 PATH、dream/janitor 自进化 cron。取代 memory-system-setup skill。注意：① 记忆读写全部锚定 `$YOMI_DATA_DIR/memory`，与 cron 会话工作目录无关；工作目录只影响 janitor 提炼 skill 的落点（`.agents/skills/`，缺省在 `<data_dir>/workspace` 下）。② cron 消息在 install 时读入 cron 表、之后不随 reinstall 更新——改 prompts 后需删两条 `ext:memory-system:*` job 再 reinstall，或 `yomi cron update`。③ prompts 为中文；非中文部署请在创建后自行翻译 job 消息 |
 
 | 类型 | 资产 | 说明 |
 |---|---|---|
 | skill | [`skills/kanban/`](skills/kanban/SKILL.md) | 任务看板：`.yomi/kanban/` 目录即列，一卡一 md、mv 即流转；依赖闸（多父）、review 闸、cron 幂等键、blocked 熔断；卡的 ## Log 承担黑板职责（2026-08-29 起取代 task-tickets 与 blackboard） |
-| skill | [`skills/memory-system-setup/`](skills/memory-system-setup/SKILL.md) | 一次性 bootstrap agent 记忆系统：AGENTS.md 记忆块、memory/ 目录（NOW.md 在途工作层 + diary + recall 检索）、dream + janitor 自进化 cron；装完即弃 |
 | skill | [`skills/grill-me/`](skills/grill-me/SKILL.md) | 就计划/设计对用户穷追猛打式提问，直到决策树每个分支都收敛、达成共识 |
 | skill | [`skills/handoff/`](skills/handoff/SKILL.md) | 任务交接文档方法论：何时写、结构怎么搭、不变量与易变信息分层 |
 | skill | [`skills/coding-guideline/`](skills/coding-guideline/SKILL.md) | 写/review 代码的行为准则，减少常见编码错误 |
@@ -22,7 +21,7 @@ skills 住 [`skills/`](skills/) 子目录，扩展包住 [`ext/`](ext/) 子目�
 | skill | [`skills/tmux/`](skills/tmux/SKILL.md) | 远控 tmux session 驱动交互式 CLI：送键、抓屏、读输出 |
 | skill | [`skills/fetch/`](skills/fetch/SKILL.md) | URL 抓取与正文提取：curl 落盘缓存（1h + stale-if-error）+ pandoc 提取 gfm（硬依赖），PDF/图片分发 |
 
-janitor 不再单独规划——它作为 memory-system-setup 的两个常驻 cron 之一（完整 prompt）收录在该 skill 中。模板机制（`agent` 工具 `template` 参数、ROLE.md 约定）说明在 yomi 内核的工具 desc 与设计文档中，不再需要单独 skill。官方内置模板 planner/verifier/explorer/reviewer 预置在 yomi 内核（`crates/kernel/src/agent_tmpl/`），不在此仓。
+janitor 不再单独规划——它与 dream 作为 memory-system 扩展包（`ext/memory-system/prompts/`）的两条 cron 随包装机。模板机制（`agent` 工具 `template` 参数、ROLE.md 约定）说明在 yomi 内核的工具 desc 与设计文档中，不再需要单独 skill。官方内置模板 planner/verifier/explorer/reviewer 预置在 yomi 内核（`crates/kernel/src/agent_tmpl/`），不在此仓。
 
 ## 安装
 
