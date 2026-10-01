@@ -8,7 +8,7 @@ skills 住 [`skills/`](skills/) 子目录，扩展包住 [`ext/`](ext/) 子目�
 
 | 类型 | 资产 | 说明 |
 |---|---|---|
-| extension | [`ext/memory-system/`](ext/memory-system/ext.toml) | Agent 持久记忆系统（`yomi extension install Crescent617/yomi-extensions/ext/memory-system`）：记忆纪律进系统提示词、recall 分层检索命令上 PATH、dream/janitor 自进化 cron。取代 memory-system-setup skill |
+| extension | [`ext/memory-system/`](ext/memory-system/ext.toml) | Agent 持久记忆系统（`yomi extension install Crescent617/yomi-extensions/ext/memory-system`）：记忆纪律进系统提示词、recall 分层检索命令上 PATH、dream/janitor 自进化 cron。取代 memory-system-setup skill。注意：dream/janitor 会话工作目录缺省为 daemon 默认 workspace（`<data_dir>/workspace`）——memory/ 在别处时，装后用 `yomi cron update` 把两条 job 的工作目录改过去 |
 
 | 类型 | 资产 | 说明 |
 |---|---|---|

@@ -5,7 +5,7 @@ set -euo pipefail
 
 root="${1:-$PWD}"
 m="$root/memory"
-mkdir -p "$m/worklog" "$m/diary" "$m/dream" "$m/janitor" "$m/friend" "$m/group"
+mkdir -p "$m/worklog" "$m/diary" "$m/dream" "$m/janitor" "$m/friend" "$m/group" "$m/knowledge"
 
 [ -f "$m/NOW.md" ] || printf '# Now — important in-flight work only, one terse line each\n<!-- - [sess_or_chat_id] MM-DD — what (where); a line leaves only via a diary entry -->\n' > "$m/NOW.md"
 [ -f "$m/contacts.md" ] || printf '| name | platform | id | note |\n| --- | --- | --- | --- |\n' > "$m/contacts.md"
