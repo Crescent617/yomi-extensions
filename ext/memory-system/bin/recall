@@ -13,6 +13,10 @@ set -euo pipefail
 kw="$1"
 
 root="${RECALL_ROOT:-}"
+if [[ -z "$root" && -n "${YOMI_DATA_DIR:-}" && -d "$YOMI_DATA_DIR/workspace/memory" ]]; then
+  # yomi 子进程自带 YOMI_DATA_DIR：主库优先，任何工作目录都能检索。
+  root="$YOMI_DATA_DIR/workspace"
+fi
 if [[ -z "$root" ]]; then
   d="$PWD"
   while true; do
