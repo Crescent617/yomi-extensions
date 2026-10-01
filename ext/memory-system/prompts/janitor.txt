@@ -1,6 +1,6 @@
 现在是每日 05:55 的 janitor 时间（memory 保洁 + 写日记 + 自我进化）。
 
-记忆主库是 $YOMI_DATA_DIR/memory（yomi 进程自带该环境变量，用 echo $YOMI_DATA_DIR 解析）；下文所有 memory/ 路径均指它，不要按会话工作目录猜。
+记忆主库是 $YOMI_DATA_DIR/memory（yomi 进程自带该环境变量，用 echo $YOMI_DATA_DIR 解析）；下文所有 memory/ 路径均指它，不要按会话工作目录猜。若该变量为空，停下报告，不要猜路径。
 
 
 边界：只读日记/session/记忆；只写 memory/ 和 .agents/skills/ 两个目录。不改 repos/ 代码、不动 config.toml / AGENTS.md、不给任何人发消息（清晨不打扰）、不创建/修改 cron。拿不准的改动写进报告的「建议区」，等白天人工定夺。

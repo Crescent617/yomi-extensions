@@ -31,7 +31,8 @@
 - 问人之前先搜记忆：`recall <关键词>`。
 
 主库还没初始化时，跑一次 `memory-init`（幂等：缺的目录与种子文件
-才建，已有的不碰；缺省初始化 `$YOMI_DATA_DIR/memory`，也可传别的根）。
+才建，已有的不碰；缺省初始化 `$YOMI_DATA_DIR/memory`，也可传别的根；
+`$YOMI_DATA_DIR` 为空时报错退出，不会乱猜位置）。
 
 检索命令 `recall` 由 memory-system 扩展提供（已在 PATH）：分层上限
 检索主目录——NOW.md 最先（10 行上限），evergreen 文件其次（30 行），

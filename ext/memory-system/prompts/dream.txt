@@ -1,6 +1,6 @@
 现在是做梦时间（每天 03:33）。
 
-记忆主库是 $YOMI_DATA_DIR/memory（yomi 进程自带该环境变量，用 echo $YOMI_DATA_DIR 解析）；下文所有 memory/ 路径均指它，不要按会话工作目录猜。
+记忆主库是 $YOMI_DATA_DIR/memory（yomi 进程自带该环境变量，用 echo $YOMI_DATA_DIR 解析）；下文所有 memory/ 路径均指它，不要按会话工作目录猜。若该变量为空，停下报告，不要猜路径。
 
 
 1. 先读素材：memory/worklog/ 里前一天（{{date}} 减一天）和最近几天的条目，再随意翻翻 memory/ 下其他文件（NOW.md、friend/、group/、lesson.md、contacts.md、archive.md 不必全读）。

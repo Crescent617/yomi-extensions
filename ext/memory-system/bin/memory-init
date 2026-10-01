@@ -4,7 +4,11 @@
 #                                在 <根>/memory/ 下只建缺的，已有的不碰）
 set -euo pipefail
 
-root="${1:-${YOMI_DATA_DIR:-$PWD}}"
+root="${1:-${YOMI_DATA_DIR:-}}"
+if [[ -z "$root" ]]; then
+  echo "memory-init: YOMI_DATA_DIR not set (pass data dir as argument)" >&2
+  exit 1
+fi
 m="$root/memory"
 mkdir -p "$m/worklog" "$m/diary" "$m/dream" "$m/janitor" "$m/friend" "$m/group" "$m/knowledge"
 
