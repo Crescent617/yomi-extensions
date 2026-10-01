@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# memory-init — 幂等初始化当前 workspace 的记忆目录。
+# 用法：memory-init [目录]   （缺省 $PWD；只建缺的，已有的不碰）
+set -euo pipefail
+
+root="${1:-$PWD}"
+m="$root/memory"
+mkdir -p "$m/worklog" "$m/diary" "$m/dream" "$m/janitor" "$m/friend" "$m/group"
+
+[ -f "$m/NOW.md" ] || printf '# Now — important in-flight work only, one terse line each\n<!-- - [sess_or_chat_id] MM-DD — what (where); a line leaves only via a diary entry -->\n' > "$m/NOW.md"
+[ -f "$m/contacts.md" ] || printf '| name | platform | id | note |\n| --- | --- | --- | --- |\n' > "$m/contacts.md"
+[ -f "$m/lesson.md" ] || printf '# Lessons\n\n<!-- one line each: YYYY-MM-DD — lesson (source) -->\n' > "$m/lesson.md"
+[ -f "$m/archive.md" ] || touch "$m/archive.md"
+
+# 私有笔记不进版本库。
+if [ -d "$root/.git" ] && ! grep -qs '^memory/$' "$root/.gitignore" 2>/dev/null; then
+  printf 'memory/\n' >> "$root/.gitignore"
+  echo "appended memory/ to .gitignore"
+fi
+
+echo "memory system ready at $m"

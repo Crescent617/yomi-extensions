@@ -4,7 +4,11 @@
 
 ## 内容
 
-skills 住 [`skills/`](skills/) 子目录，其他资产类型（如模板）各有顶层目录：
+skills 住 [`skills/`](skills/) 子目录，扩展包住 [`ext/`](ext/) 子目录，其他资产类型（如模板）各有顶层目录：
+
+| 类型 | 资产 | 说明 |
+|---|---|---|
+| extension | [`ext/memory-system/`](ext/memory-system/ext.toml) | Agent 持久记忆系统（`yomi extension install Crescent617/yomi-extensions/ext/memory-system`）：记忆纪律进系统提示词、recall 分层检索命令上 PATH、dream/janitor 自进化 cron。取代 memory-system-setup skill |
 
 | 类型 | 资产 | 说明 |
 |---|---|---|

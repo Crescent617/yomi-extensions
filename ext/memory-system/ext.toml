@@ -1,0 +1,14 @@
+[ext]
+name = "memory-system"
+version = "1.0.0"
+description = "Agent 持久记忆系统：memory/ 目录约定进系统提示词 + recall 分层检索命令 + dream/janitor 自进化 cron"
+
+[[cron]]
+name = "dream"
+schedule = "33 3 * * *"
+message_file = "prompts/dream.txt"
+
+[[cron]]
+name = "janitor"
+schedule = "55 5 * * *"
+message_file = "prompts/janitor.txt"
