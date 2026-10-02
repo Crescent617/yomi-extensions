@@ -12,7 +12,7 @@ fi
 m="$root/memory"
 mkdir -p "$m/worklog" "$m/diary" "$m/dream" "$m/janitor" "$m/friend" "$m/group" "$m/knowledge"
 
-[ -f "$m/NOW.md" ] || printf '# Now — important in-flight work only, one terse line each\n<!-- - [sess_or_chat_id] MM-DD — what (where); a line leaves only after its outcome is appended to today's worklog -->\n' > "$m/NOW.md"
+[ -f "$m/NOW.md" ] || printf '# Now — important in-flight work only, one terse line each\n<!-- - [sess_or_chat_id] MM-DD — what (where); a line leaves only after its outcome is appended to the worklog of that day -->\n' > "$m/NOW.md"
 [ -f "$m/contacts.md" ] || printf '| name | platform | id | note |\n| --- | --- | --- | --- |\n' > "$m/contacts.md"
 [ -f "$m/lesson.md" ] || printf '# Lessons\n\n<!-- one line each: YYYY-MM-DD — lesson (source) -->\n' > "$m/lesson.md"
 [ -f "$m/archive.md" ] || touch "$m/archive.md"
