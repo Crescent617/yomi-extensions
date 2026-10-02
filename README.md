@@ -8,7 +8,7 @@ skills 住 [`skills/`](skills/) 子目录，扩展包住 [`ext/`](ext/) 子目�
 
 | 类型 | 资产 | 说明 |
 |---|---|---|
-| extension | [`ext/memory-system/`](ext/memory-system/ext.toml) | Agent 持久记忆系统（`yomi extension install Crescent617/yomi-extensions/ext/memory-system`）：记忆纪律进系统提示词、recall 分层检索命令上 PATH、dream/janitor 自进化 cron。取代 memory-system-setup skill。注意：① 记忆读写全部锚定 `$YOMI_DATA_DIR/memory`，与 cron 会话工作目录无关；工作目录只影响 janitor 提炼 skill 的落点（`.agents/skills/`，缺省在 `<data_dir>/workspace` 下）。② cron 消息随 reinstall 更新（yomi ≥ 0.11.0 refresh 语义，schedule 等部署时机不动）——装新版前先看 [UPGRADE.md](ext/memory-system/UPGRADE.md)③ prompts 为中文；非中文部署请在创建后自行翻译 job 消息 |
+| extension | [`ext/memory-system/`](ext/memory-system/ext.toml) | Agent 持久记忆系统（`yomi extension install Crescent617/yomi-extensions/ext/memory-system`）：记忆纪律进系统提示词、recall 分层检索命令上 PATH、dream/janitor 自进化 cron。取代 memory-system-setup skill。注意：① 记忆读写全部锚定 `$YOMI_DATA_DIR/memory`，与 cron 会话工作目录无关；工作目录只影响 janitor 提炼 skill 的落点（`.agents/skills/`，缺省在 `<data_dir>/workspace` 下）。② cron 消息随 reinstall 更新（yomi ≥ 0.11.0 refresh 语义，schedule 等部署时机不动）。从旧 skill 形态（AGENTS.md 纪律段 + memory/recall 脚本 + 手工 cron）迁移的用户先看 [UPGRADE.md](ext/memory-system/UPGRADE.md)③ prompts 为中文；非中文部署请在创建后自行翻译 job 消息 |
 
 | 类型 | 资产 | 说明 |
 |---|---|---|
