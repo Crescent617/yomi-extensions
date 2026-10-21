@@ -1,6 +1,6 @@
 ---
 name: kanban
-description: 任务看板。Use when 多 agent 协作派活与互见进展、任务有依赖顺序、要看全局状态、周期任务防重复建卡时。
+description: 任务看板（kb 命令）。Use when 多 agent 协作派活与互见进展、任务有依赖顺序、要看全局状态、周期任务防重复建卡；或收到派活要操作某张看板卡时——触发词：做卡 X、认领卡、执行看板卡、kb claim/log/pass、看板、kanban、kb board。
 ---
 
 # Kanban 任务看板
@@ -41,7 +41,7 @@ kb show ID / kb ls [列]   # 看卡 / TSV 清单
 
 **协调者**：拆工作包 → `kb new` 建卡（正文写全上下文+验收标准，执行者没有你的上下文）→ 派活给协作 agent 时给卡 id（卡里有 kb 完整命令）。依赖用 `--after`（多父=全部 done 才解锁；要"等任一"就拆卡）；周期任务用 `--key "$(date +%F)-xxx"` 防重复建卡。看全局跑 `kb board`。完成判据：每张活卡都有 owner 或明确的 after 链。
 
-**执行者**：`kb claim ID --as <自己 session id>` 先认领 → 进展随手 `kb log` → 填 `## Result` 三行（结果/产物/遗留）→ `kb pass`。卡壳即 `kb block ID "原因"`；被 reject 的原因在 ## Log，改完重新 `pass`。完成判据：卡状态与真实进度一致，以文件为准。
+**执行者**（被派活「做卡 X / 认领卡 X」= 认领并执行已有卡 X）：`kb claim ID --as <自己 session id>` 先认领 → 进展随手 `kb log` → 填 `## Result` 三行（结果/产物/遗留）→ `kb pass`。卡壳即 `kb block ID "原因"`；被 reject 的原因在 ## Log，改完重新 `pass`。完成判据：卡状态与真实进度一致，以文件为准。
 
 **验收者**（人或 verifier 模板）：`kb board` 看 REVIEW 列 → `kb show` 审 Result 与产物 → 过 `kb done`，不过 `kb reject ID "差什么"`。完成判据：REVIEW 列清零。
 
