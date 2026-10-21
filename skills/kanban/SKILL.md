@@ -41,6 +41,8 @@ kb show ID / kb ls [列]   # 看卡 / TSV 清单
 
 **协调者**：拆工作包 → `kb new` 建卡（正文写全上下文+验收标准，执行者没有你的上下文）→ 派活给协作 agent 时给卡 id（卡里有 kb 完整命令）。依赖用 `--after`（多父=全部 done 才解锁；要"等任一"就拆卡）；周期任务用 `--key "$(date +%F)-xxx"` 防重复建卡。看全局跑 `kb board`。完成判据：每张活卡都有 owner 或明确的 after 链。
 
+派活消息要避免歧义动词——「做卡 X」会被执行者误读成「新建一张叫 X 的卡」（2026-10-16 tz5x→11un、3xyp→cxjr；2026-10-20 kf0r→q830、eree 停在澄清之问；2026-10-21 fm6t→pwcx，五起判例）。推荐模板：**「认领并执行看板卡 X：`kb claim X --as <你的 session id>`（卡已存在，勿新建；进展 kb log，做完填 ## Result 后 kb pass）」**——把命令直接写进消息，执行者零解读成本。
+
 **执行者**（被派活「做卡 X / 认领卡 X」= 认领并执行已有卡 X）：`kb claim ID --as <自己 session id>` 先认领 → 进展随手 `kb log` → 填 `## Result` 三行（结果/产物/遗留）→ `kb pass`。卡壳即 `kb block ID "原因"`；被 reject 的原因在 ## Log，改完重新 `pass`。完成判据：卡状态与真实进度一致，以文件为准。
 
 **验收者**（人或 verifier 模板）：`kb board` 看 REVIEW 列 → `kb show` 审 Result 与产物 → 过 `kb done`，不过 `kb reject ID "差什么"`。完成判据：REVIEW 列清零。
